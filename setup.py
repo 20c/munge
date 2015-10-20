@@ -6,15 +6,19 @@ setup(
     version=open('config/VERSION').read().rstrip(),
     author='Twentieth Century',
     author_email='code@20c.com',
-    description='',
+    description='data manipulation client / library',
     long_description=open('README.md').read(),
     license='LICENSE.txt',
     classifiers=[
         'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages = find_packages(),
     scripts=['munge/bin/munge'],
-
+    url = 'https://github.com/20c/munge',
+    download_url = 'https://github.com/20c/munge/%s' % version,
+    include_package_data=True,
     zip_safe=False
 )
