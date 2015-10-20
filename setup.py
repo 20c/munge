@@ -1,9 +1,11 @@
 
 from setuptools import setup, find_packages
 
+version = open('config/VERSION').read().rstrip()
+
 setup(
     name='munge',
-    version=open('config/VERSION').read().rstrip(),
+    version=version,
     author='Twentieth Century',
     author_email='code@20c.com',
     description='data manipulation client / library',
