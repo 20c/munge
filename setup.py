@@ -7,7 +7,7 @@ setup(
     author='Twentieth Century',
     author_email='code@20c.com',
     description='',
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     license='LICENSE.txt',
     classifiers=[
         'Development Status :: 4 - Beta',
