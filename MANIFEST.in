@@ -1,4 +1,4 @@
 include LICENSE.txt
 recursive-include munge *.py
-recursive-include facsimile requirements*.txt
+recursive-include facsimile *.txt
 include facsimile/VERSION
