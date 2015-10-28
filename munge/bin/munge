@@ -9,6 +9,7 @@ import sys
 import munge
 import munge.codec
 import munge.codec.all
+from munge import cli
 from munge import config
 
 #munge.codec.find_import()
@@ -28,53 +29,6 @@ def get_codec(uri):
     return munge.base.get_codec(ext[1:])
 
 
-def main(argv=sys.argv):
-    conf = config.get_config()
-#    print(conf)
-    # add --write-config to make a skel config
-#    config.write_config(conf)
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input', dest='input', action='store', help='input')
-    parser.add_argument('-o', '--output', dest='output', action='store', help='output')
-    parser.add_argument('--list-codecs', action='store_true', help='list all available codecs')
-
-    args = parser.parse_args()
-    if getattr(args, 'list_codecs', False):
-        print(munge.codec.list_codecs())
-        return 0
-#    print(args)
-
-    if hasattr(args, 'input'):
-        instr = args.input
-
-        src = config.parse_url(instr, conf.get('addrbook', []))
-
-#    print(instr)
-#    print(src)
-#    print(src.url.username)
-#    print('===================')
-
-
-    if hasattr(args, 'output'):
-        outstr = args.output
-
-        dst = config.parse_url(outstr, conf.get('addrbook', {}))
-
-#    print(instr)
-#    print(src)
-#    print(outstr)
-#    print(dst)
-
-    data = src.cls().loadu(src.url.path)
-    dst.cls().dumpu(data, dst.url.path)
-#    print(args.accumulate(args.integers))
-
-
 if __name__ == '__main__':
-    sys.exit(main())
-
-
-
-
+    sys.exit(munge.cli.main())
 

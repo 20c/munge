@@ -1,25 +1,26 @@
 
 from setuptools import setup, find_packages
 
-version = open('config/VERSION').read().rstrip()
+version = open('facsimile/VERSION').read().strip()
+requirements = open('facsimile/requirements.txt').read().split("\n")
+#test_requirements = open('facsimile/requirements-test.txt').read().split("\n")
+
 
 setup(
     name='munge',
     version=version,
-    author='Twentieth Century',
+    author='20C',
     author_email='code@20c.com',
     description='data manipulation client / library',
+    long_description=open('README.txt').read(),
     license='LICENSE.txt',
     classifiers=[
         'Development Status :: 4 - Beta',
-        'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
-        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     packages = find_packages(),
+    install_requires=requirements,
     scripts=['munge/bin/munge'],
-    url = 'https://github.com/20c/munge',
-    download_url = 'https://github.com/20c/munge/%s' % version,
-    include_package_data=True,
+
     zip_safe=False
 )

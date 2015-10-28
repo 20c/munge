@@ -1,1 +1,4 @@
-include config/VERSION
+include LICENSE.txt
+recursive-include munge *.py
+recursive-include facsimile requirements*.txt
+include facsimile/VERSION
