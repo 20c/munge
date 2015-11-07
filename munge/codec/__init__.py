@@ -67,7 +67,7 @@ def get_codec(tag, codecs=get_codecs()):
         if tag in exts:
             return cls
 
-def find_datafile(name, search_path, codecs=get_codecs()):
+def find_datafile(name, search_path=['.'], codecs=get_codecs()):
     """
     find all matching data files in search_path
     search_path: path of directories to load from
@@ -100,7 +100,7 @@ def find_datafile(name, search_path, codecs=get_codecs()):
 
     return rv
 
-def load_datafile(name, search_path, codecs=get_codecs(), **kwargs):
+def load_datafile(name, search_path=['.'], codecs=get_codecs(), **kwargs):
     """
     find datafile and load them from codec
     TODO only does the first one

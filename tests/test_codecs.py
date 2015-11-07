@@ -163,6 +163,14 @@ def test_load_datafile(codec, dataset):
         data = None
     assert data
 
+    # test default search path '.'
+    #files = munge.find_datafile('set0', data_dir)
+    files = munge.find_datafile(fq_path, this_dir)
+    assert 1 == len(files)
+    relpath = os.path.relpath(files[0][1])
+    data = munge.load_datafile(relpath)
+    assert data
+
     with pytest.raises(IOError):
         munge.load_datafile(dataset.filename, this_dir, codecs={})
 
