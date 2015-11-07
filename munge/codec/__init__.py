@@ -81,6 +81,15 @@ def find_datafile(name, search_path, codecs=get_codecs()):
 
     #print "search path ", str(search_path)
 
+    ext = os.path.splitext(name)[1][1:]
+
+    cls = get_codec(ext)
+    if cls:
+        for each in search_path:
+            fq_filename = os.path.join(each, name)
+            if os.path.exists(fq_filename):
+                rv.append((cls, fq_filename))
+
     for exts, obj in codecs.items():
         for ext in exts:
             filename="%s.%s" % (name, ext)
@@ -106,5 +115,4 @@ def load_datafile(name, search_path, codecs=get_codecs(), **kwargs):
 
     (codec, datafile) = mod[0]
     return codec().load(open(datafile))
-
 

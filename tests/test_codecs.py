@@ -153,6 +153,16 @@ def test_load_datafile(codec, dataset):
     data = munge.load_datafile(dataset.filename, this_dir)
     assert data
 
+    # test hardset extension
+    assert obj.extensions
+    for ext in obj.extensions:
+        fq_path = "%s.%s" % (dataset.filename, ext)
+        data = munge.load_datafile(fq_path, this_dir, default=None)
+        if data:
+            break
+        data = None
+    assert data
+
     with pytest.raises(IOError):
         munge.load_datafile(dataset.filename, this_dir, codecs={})
 
