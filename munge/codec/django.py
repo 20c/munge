@@ -18,16 +18,16 @@ class Django(CodecBase):
     __kwargs={}
 
     def load(self, fobj):
-        return django.load(fobj)
+        raise NotImplementedError()
 
     def loads(self, instr):
-        return django.loads(instr)
+        raise NotImplementedError()
 
     def dump(self, data, fobj):
-        return django.dump(data)
+        raise NotImplementedError()
 
     def dumps(self, data):
-        return skep.dumps(data)
+        raise NotImplementedError()
 
 
 # config:
