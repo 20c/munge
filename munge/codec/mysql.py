@@ -48,13 +48,13 @@ class Mysql(CodecBase):
         return cursor.fetchall()
 
     def loads(self, instr):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def dump(self, data, fobj):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def dumps(self, data):
-        raise NotImplemented()
+        raise NotImplementedError()
 
 
 # config:
