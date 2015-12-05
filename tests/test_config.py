@@ -10,6 +10,9 @@ import munge
 from munge import config
 
 
+test_dir = os.path.relpath(os.path.dirname(__file__))
+data_dir = os.path.join(test_dir, 'data')
+conf0_dir = os.path.join(data_dir, 'conf0')
 extra_schemes = {
     'tyam': {
         'type': 'yaml',
@@ -48,4 +51,94 @@ def test_parse_url():
     with pytest.raises(ValueError):
         config.parse_url('nonexistant:test', extra_schemes)
 
+default_config = {
+    'addrbook': {
+    }
+}
+
+conf0_config = {
+    'addrbook': {
+        'site0': {
+            'url': 'https://example.com/data.json',
+            'password': 'secr3t',
+            'user': 'user',
+            'timeout': 60
+        }
+    }
+}
+
+
+class TestConfig(munge.config.Config):
+    defaults={
+        'config': default_config,
+        'conf_dir': '~/.munge',
+        'codec':  'yaml'
+    }
+    class Defaults:
+        config=default_config
+
+def mk_base_conf():
+    return munge.config.Config(**TestConfig.defaults)
+
+def mk_derived_conf():
+    return TestConfig()
+
+conf_obj_ctors = (
+    mk_base_conf,
+    mk_derived_conf,
+)
+
+def mk_base_conf0():
+    conf = munge.config.Config(**TestConfig.defaults)
+    conf.read(conf0_dir)
+    return conf
+
+def mk_base_conf0_init():
+    return munge.config.Config(read=conf0_dir, **TestConfig.defaults)
+
+def mk_base_conf0_init_data():
+    return munge.config.Config(data=conf0_config, **TestConfig.defaults)
+
+def mk_derived_conf0():
+    conf = TestConfig()
+    conf.read(conf0_dir)
+    return conf
+
+conf0_obj_ctors = (
+    mk_base_conf0,
+    mk_base_conf0_init,
+    mk_base_conf0_init_data,
+    mk_derived_conf0,
+)
+
+@pytest.fixture(scope="module", params=conf_obj_ctors)
+def conf(request):
+    return request.param()
+
+@pytest.fixture(scope="module", params=conf0_obj_ctors)
+def conf0(request):
+    return request.param()
+
+def test_derived_config_obj(conf):
+    assert default_config == conf.default()
+    baseconf = munge.config.Config(**TestConfig.defaults)
+
+
+def test_config_obj(conf):
+    assert default_config == conf.default()
+    # XXX  clear should probably go back to default?
+    # clear should go back to default
+    conf.clear()
+    assert len(conf) == 0
+
+    with pytest.raises(IOError):
+        conf.read('nonexistant')
+
+# test copy default dict
+
+def test_conf0(conf0):
+    conf = config.get_config(conf0_dir)
+    assert conf0_config == conf
+
+    assert conf0_config == conf0.data
 
