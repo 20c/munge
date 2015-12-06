@@ -11,11 +11,15 @@ import munge.util
 # this wouldn't work with tabular data
 # need metaclass to allow users to set info once on class
 class Config(collections.MutableMapping):
-    __defaults={
+    # internal base for defaults
+    _base_defaults={
         'config': {},
-        'conf_dir': None,
+        'config_dir': None,
         'codec':  None,
-    }
+
+        'autowrite': False,
+        'validate': False,
+        }
 
     def __init__(self, **kwargs):
         """
@@ -23,13 +27,14 @@ class Config(collections.MutableMapping):
         data=dict to set initial data
         read=dir to open a dir
         """
+
         # use derived class defaults if available
         if hasattr(self, 'defaults'):
             derived_defaults = self.defaults
-            self.defaults = self.__defaults
+            self.defaults = self._base_defaults.copy()
             self.defaults.update(derived_defaults)
         else:
-            self.defaults = self.__defaults
+            self.defaults = self._base_defaults.copy()
 
         # override anything passed to kwargs
         for k,v in kwargs.items():
@@ -40,7 +45,9 @@ class Config(collections.MutableMapping):
         self._meta_config_dir = ''
 
         if 'read' in kwargs:
+            print "READING"
             self.read(kwargs['read'])
+            print self.data
 
     def __getitem__(self, key):
         return self.data[key]
@@ -60,19 +67,20 @@ class Config(collections.MutableMapping):
     def default(self):
         return self.defaults['config'].copy()
 
-    def reset(self):
+    def clear(self):
         self.data = self.default()
 
-    def read(self, conf_dir=None, reset=False):
-        """ read config from conf_dir
-            if conf_dir is None, reset to default config
+    def read(self, config_dir=None, reset=False):
+        """ read config from config_dir
+            if config_dir is None, reset to default config
         """
 
-        if not conf_dir:
-            if not self.defaults['conf_dir']:
+        if not config_dir:
+            if not self.defaults['config_dir']:
                 raise IOError("default config dir not set")
+            config_dir = self.defaults['config_dir']
 
-        conf_path = os.path.expanduser(conf_dir)
+        conf_path = os.path.expanduser(config_dir)
         if not os.path.exists(conf_path):
             raise IOError("config dir not found at %s" % (conf_path,))
 
@@ -84,33 +92,17 @@ class Config(collections.MutableMapping):
             munge.util.recursive_update(self.data, config)
             #data['__config_dir__'] = conf_path
 
-    def write(self, conf_dir=None, codec=None):
+        return self
+
+    def write(self, config_dir=None, codec=None):
         if not codec:
             codec=munge.get_codec('yaml')()
-        conf_dir = os.path.expanduser(conf_dir)
-        if not os.path.exists(conf_dir):
-            os.mkdir(conf_dir)
+        config_dir = os.path.expanduser(config_dir)
+        if not os.path.exists(config_dir):
+            os.mkdir(config_dir)
 
-        codec.dump(data, open(os.path.join(conf_dir, 'config.' + codec.extensions[0]), 'w'))
+        codec.dump(data, open(os.path.join(config_dir, 'config.' + codec.extensions[0]), 'w'))
 
-
-def get_config(conf_dir='~/.munge'):
-    conf_dir = os.path.expanduser(conf_dir)
-    if os.path.exists(conf_dir):
-        data = munge.load_datafile('config', conf_dir, default=None)
-        if data:
-            return data
-
-    return {}
-
-def write_config(data, conf_dir='~/.munge', codec=None):
-    if not codec:
-        codec=munge.get_codec('yaml')()
-    conf_dir = os.path.expanduser(conf_dir)
-    if not os.path.exists(conf_dir):
-        os.mkdir(conf_dir)
-
-    codec.dump(data, open(os.path.join(conf_dir, 'config.' + codec.extensions[0]), 'w'))
 
 class Endpoint(object):
     def __init__(self, data):

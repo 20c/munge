@@ -56,7 +56,7 @@ default_config = {
     }
 }
 
-conf0_config = {
+conf0_data = {
     'addrbook': {
         'site0': {
             'url': 'https://example.com/data.json',
@@ -68,10 +68,10 @@ conf0_config = {
 }
 
 
-class TestConfig(munge.config.Config):
+class TestConfig(munge.Config):
     defaults={
         'config': default_config,
-        'conf_dir': '~/.munge',
+        'config_dir': '~/.mungXXXe',
         'codec':  'yaml'
     }
     class Defaults:
@@ -97,7 +97,7 @@ def mk_base_conf0_init():
     return munge.config.Config(read=conf0_dir, **TestConfig.defaults)
 
 def mk_base_conf0_init_data():
-    return munge.config.Config(data=conf0_config, **TestConfig.defaults)
+    return munge.config.Config(data=conf0_data, **TestConfig.defaults)
 
 def mk_derived_conf0():
     conf = TestConfig()
@@ -126,19 +126,38 @@ def test_derived_config_obj(conf):
 
 def test_config_obj(conf):
     assert default_config == conf.default()
-    # XXX  clear should probably go back to default?
-    # clear should go back to default
+    assert default_config == conf.data
+    conf.data['foo'] = 42
+    assert default_config != conf.data
     conf.clear()
-    assert len(conf) == 0
+    assert default_config == conf.data
+
+
+def test_config_read(conf):
+    cfg = munge.Config()
+
+    assert cfg._base_defaults == cfg.defaults
 
     with pytest.raises(IOError):
         conf.read('nonexistant')
 
+    # read with no config_dir and no default
+    with pytest.raises(IOError):
+        cfg.read()
+
+    # config_dir from arg
+    assert conf0_data == cfg.read(conf0_dir).data
+
+    # config_dir from defaults
+    cfg = munge.Config()
+    cfg.defaults['config_dir'] = conf0_dir
+    assert conf0_data == cfg.read().data
+
+    # defaults is copy
+    assert cfg._base_defaults != cfg.defaults
+
 # test copy default dict
 
 def test_conf0(conf0):
-    conf = config.get_config(conf0_dir)
-    assert conf0_config == conf
-
-    assert conf0_config == conf0.data
+    assert conf0_data == conf0.data
 
