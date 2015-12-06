@@ -156,7 +156,15 @@ def test_config_read(conf):
     # defaults is copy
     assert cfg._base_defaults != cfg.defaults
 
+    # ctor read
+    cfg = munge.Config(read=conf0_dir)
+    assert conf0_data == cfg.data
+
+    with pytest.raises(IOError):
+        cfg.read(os.getcwd())
+
 # test copy default dict
+
 
 def test_conf0(conf0):
     assert conf0_data == conf0.data

@@ -45,9 +45,7 @@ class Config(collections.MutableMapping):
         self._meta_config_dir = ''
 
         if 'read' in kwargs:
-            print "READING"
             self.read(kwargs['read'])
-            print self.data
 
     def __getitem__(self, key):
         return self.data[key]
@@ -70,9 +68,9 @@ class Config(collections.MutableMapping):
     def clear(self):
         self.data = self.default()
 
-    def read(self, config_dir=None, reset=False):
+    def read(self, config_dir=None, clear=False):
         """ read config from config_dir
-            if config_dir is None, reset to default config
+            if config_dir is None, clear to default config
         """
 
         if not config_dir:
@@ -84,12 +82,15 @@ class Config(collections.MutableMapping):
         if not os.path.exists(conf_path):
             raise IOError("config dir not found at %s" % (conf_path,))
 
-        if reset:
-            self.reset()
+        if clear:
+            self.clear()
 
         config = munge.load_datafile('config', conf_path, default=None)
-        if config:
-            munge.util.recursive_update(self.data, config)
+
+        if not config:
+            raise IOError("config file not found in %s" % (conf_path,))
+
+        munge.util.recursive_update(self.data, config)
             #data['__config_dir__'] = conf_path
 
         return self
