@@ -62,6 +62,17 @@ class Config(collections.MutableMapping):
     def __len__(self):
         return len(self.data)
 
+    def get_nested(self, *args):
+        """
+        get a nested value, returns None if path does not exist
+        """
+        data = self.data
+        for key in args:
+            if key not in data:
+                return None
+            data = data[key]
+        return data
+
     def default(self):
         return self.defaults['config'].copy()
 

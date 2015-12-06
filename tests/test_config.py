@@ -169,3 +169,6 @@ def test_config_read(conf):
 def test_conf0(conf0):
     assert conf0_data == conf0.data
 
+    assert conf0_data['addrbook']['site0']['url'] == conf0.get_nested('addrbook', 'site0', 'url')
+    assert None == conf0.get_nested('addrbook', 'site1', 'url')
+
