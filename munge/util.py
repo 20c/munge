@@ -14,15 +14,15 @@ def recursive_update(a, b, copy=False):
         if isinstance(v, collections.Mapping):
             if isinstance(a.get(k, None), collections.Mapping):
                 recursive_update(a[k], v)
-            else:
-                # warning, clobbering
-                a[k] = v
+                continue
+
         elif type(v) is list:
             if type(a.get(k, None)) is list:
                 a[k].extend(v)
-        else:
-            a[k] = v
+                continue
 
+        # warning, clobbering
+        a[k] = v
 
     return a
 

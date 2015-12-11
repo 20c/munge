@@ -18,6 +18,7 @@ def test_recursive_update():
             'c': 3,
             },
         'l2': [4, 5],
+        'l3': [1, 2],
         }
     merged = {
         'a': 1,
@@ -28,6 +29,7 @@ def test_recursive_update():
             },
         'l': [1, 2, 5],
         'l2': [1, 2, 3, 4, 5],
+        'l3': [1, 2],
         }
 
     munge.util.recursive_update(a, b)
