@@ -10,6 +10,7 @@ import munge.util
 
 # this wouldn't work with tabular data
 # need metaclass to allow users to set info once on class
+# TODO rename to BaseConfig
 class Config(collections.MutableMapping):
     # internal base for defaults
     _base_defaults={
@@ -115,6 +116,13 @@ class Config(collections.MutableMapping):
 
         codec.dump(data, open(os.path.join(config_dir, 'config.' + codec.extensions[0]), 'w'))
 
+
+class MungeConfig(Config):
+    defaults={
+        'config': {},
+        'config_dir': '~/.munge',
+        'codec':  'yaml'
+    }
 
 class Endpoint(object):
     def __init__(self, data):

@@ -29,6 +29,17 @@ data = (
     DataSet0,
     )
 
+class DataTab0(object):
+    name='tab0'
+    filename='data/' + name
+
+    expected = [{'int0': 42, 'str0': 'str0'}, {'int0': 1337, 'str0': 'fish'}]
+
+
+data = (
+    DataSet0,
+    DataTab0,
+    )
 
 class Codec(object):
     def __init__(self, cls):

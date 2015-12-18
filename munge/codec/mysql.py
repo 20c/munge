@@ -56,10 +56,3 @@ class Mysql(CodecBase):
     def dumps(self, data):
         raise NotImplementedError()
 
-
-# config:
-
-#tag:
-#    type: json
-#    user: balh
-#    pass:
