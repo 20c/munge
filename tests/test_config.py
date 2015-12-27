@@ -68,20 +68,20 @@ conf0_data = {
 }
 
 
-class TestConfig(munge.Config):
+class DefaultConfig(munge.Config):
     defaults={
         'config': default_config,
-        'config_dir': '~/.mungXXXe',
+        'config_dir': '~/.mungeX',
         'codec':  'yaml'
     }
     class Defaults:
         config=default_config
 
 def mk_base_conf():
-    return munge.config.Config(**TestConfig.defaults)
+    return munge.config.Config(**DefaultConfig.defaults)
 
 def mk_derived_conf():
-    return TestConfig()
+    return DefaultConfig()
 
 conf_obj_ctors = (
     mk_base_conf,
@@ -89,18 +89,18 @@ conf_obj_ctors = (
 )
 
 def mk_base_conf0():
-    conf = munge.config.Config(**TestConfig.defaults)
+    conf = munge.config.Config(**DefaultConfig.defaults)
     conf.read(conf0_dir)
     return conf
 
 def mk_base_conf0_init():
-    return munge.config.Config(read=conf0_dir, **TestConfig.defaults)
+    return munge.config.Config(read=conf0_dir, **DefaultConfig.defaults)
 
 def mk_base_conf0_init_data():
-    return munge.config.Config(data=conf0_data, **TestConfig.defaults)
+    return munge.config.Config(data=conf0_data, **DefaultConfig.defaults)
 
 def mk_derived_conf0():
-    conf = TestConfig()
+    conf = DefaultConfig()
     conf.read(conf0_dir)
     return conf
 
@@ -121,7 +121,7 @@ def conf0(request):
 
 def test_derived_config_obj(conf):
     assert default_config == conf.default()
-    baseconf = munge.config.Config(**TestConfig.defaults)
+    baseconf = munge.config.Config(**DefaultConfig.defaults)
 
 
 def test_config_obj(conf):
