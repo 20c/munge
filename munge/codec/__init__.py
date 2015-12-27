@@ -5,10 +5,11 @@ import imp
 __all__ = ['django', 'mysql', 'json', 'yaml']
 __codecs = {}
 
+
 # TODO move to .load?
 def _do_find_import(directory, skiplist=None, suffixes=None):
     #  explicitly look for None, suffixes=[] might be passed to not load anything
-    if suffixes == None:
+    if suffixes is None:
         suffixes = [t[0] for t in imp.get_suffixes()]
 
     loaded = dict()
@@ -30,8 +31,7 @@ def _do_find_import(directory, skiplist=None, suffixes=None):
             finally:
                 try:
                     imp_args[0].close()
-                    print "file closed"
-                except:
+                except Exception:
                     pass
 
     return loaded
@@ -63,11 +63,11 @@ def list_codecs():
     return [ext[0] for ext in get_codecs().keys()]
 
 def get_codec(tag, codecs=get_codecs()):
-    for exts, cls in __codecs.items():
+    for exts, cls in codecs.items():
         if tag in exts:
             return cls
 
-def find_datafile(name, search_path=['.'], codecs=get_codecs()):
+def find_datafile(name, search_path=('.'), codecs=get_codecs()):
     """
     find all matching data files in search_path
     search_path: path of directories to load from
@@ -92,7 +92,7 @@ def find_datafile(name, search_path=['.'], codecs=get_codecs()):
 
     for exts, obj in codecs.items():
         for ext in exts:
-            filename="%s.%s" % (name, ext)
+            filename = "%s.%s" % (name, ext)
             for each in search_path:
                 fq_filename = os.path.join(each, filename)
                 if os.path.exists(fq_filename):
@@ -100,7 +100,7 @@ def find_datafile(name, search_path=['.'], codecs=get_codecs()):
 
     return rv
 
-def load_datafile(name, search_path=['.'], codecs=get_codecs(), **kwargs):
+def load_datafile(name, search_path=('.'), codecs=get_codecs(), **kwargs):
     """
     find datafile and load them from codec
     TODO only does the first one
