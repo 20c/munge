@@ -6,45 +6,6 @@ __all__ = ['django', 'mysql', 'json', 'yaml']
 __codecs = {}
 
 
-# TODO move to .load?
-def _do_find_import(directory, skiplist=None, suffixes=None):
-    #  explicitly look for None, suffixes=[] might be passed to not load anything
-    if suffixes is None:
-        suffixes = [t[0] for t in imp.get_suffixes()]
-
-    loaded = dict()
-    for module in os.listdir(directory):
-        name, ext = os.path.splitext(module)
-        if name in loaded:
-            continue
-
-        if name in skiplist:
-            continue
-
-        if ext in suffixes:
-            #print "finding %s in %s" % (name, directory)
-            #mod = imp.load_module(name, *imp.find_module(name, [directory]))
-            try:
-                imp_args = imp.find_module(name, [directory])
-                mod = imp.load_module(name, *imp_args)
-                loaded[name] = mod.__file__
-            finally:
-                try:
-                    imp_args[0].close()
-                except Exception:
-                    pass
-
-    return loaded
-
-def find_import():
-
-    this = os.path.split(__file__)
-    this_dir = this[0]
-    # remove trailing c if cached bytecode
-    #this_file = this[1].rstrip('c')
-    _do_find_import(this_dir, ('all', '__init__'))
-
-
 def add_codec(exts, cls):
     if not isinstance(exts, tuple):
         exts = tuple(exts)
