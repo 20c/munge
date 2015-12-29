@@ -1,10 +1,12 @@
 
 import collections
+import copy
 import filecmp
 import imp
 import os
 import pytest
 import sys
+import shutil
 
 import munge
 from munge import config
@@ -163,8 +165,29 @@ def test_config_read(conf):
     with pytest.raises(IOError):
         cfg.read(os.getcwd())
 
-# test copy default dict
 
+def test_config_write(conf, tmpdir):
+    with pytest.raises(IOError):
+        type(conf)().write()
+
+    cdir = tmpdir.mkdir(type(conf).__name__)
+    conf.write(str(cdir), 'yaml')
+
+    # create an exact copy
+    kwargs = conf.defaults.copy()
+    kwargs['read'] = str(cdir)
+    conf2 = type(conf)(**kwargs)
+
+    assert conf == conf2
+    assert conf.defaults == conf2.defaults
+    assert conf.data == conf2.data
+
+#    conf = type(conf)(read=str(cdir))
+    shutil.rmtree(str(cdir))
+    conf2.write()
+    assert conf == conf2
+    assert conf.defaults == conf2.defaults
+    assert conf.data == conf2.data
 
 def test_conf0(conf0):
     assert conf0_data == conf0.data

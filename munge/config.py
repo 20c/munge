@@ -103,18 +103,24 @@ class Config(collections.MutableMapping):
             raise IOError("config file not found in %s" % (conf_path,))
 
         munge.util.recursive_update(self.data, config)
-            #data['__config_dir__'] = conf_path
+        self._meta_config_dir = conf_path
 
         return self
 
     def write(self, config_dir=None, codec=None):
-        if not codec:
-            codec=munge.get_codec('yaml')()
+        if not config_dir:
+            config_dir = self._meta_config_dir
+            if not config_dir:
+                raise IOError("config_dir not set")
+        if codec:
+            codec = munge.get_codec(codec)()
+        else:
+            codec = munge.get_codec(self.defaults['codec'])()
         config_dir = os.path.expanduser(config_dir)
         if not os.path.exists(config_dir):
             os.mkdir(config_dir)
 
-        codec.dump(data, open(os.path.join(config_dir, 'config.' + codec.extensions[0]), 'w'))
+        codec.dumpu(self.data, os.path.join(config_dir, 'config.' + codec.extension))
 
 
 class MungeConfig(Config):
