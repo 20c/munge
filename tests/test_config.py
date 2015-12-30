@@ -163,6 +163,10 @@ def test_config_read(conf):
     assert conf0_data == cfg.data
 
     with pytest.raises(IOError):
+        cfg = munge.Config(read='nonexistant')
+    cfg = munge.Config(try_read='nonexistant')
+
+    with pytest.raises(IOError):
         cfg.read(os.getcwd())
 
 

@@ -27,6 +27,7 @@ class Config(collections.MutableMapping):
         accepts kwargs to set defaults
         data=dict to set initial data
         read=dir to open a dir
+        try_read=dir to try to open a dir (and not throw if it doesn't read)
         """
 
         # use derived class defaults if available
@@ -47,6 +48,11 @@ class Config(collections.MutableMapping):
 
         if 'read' in kwargs:
             self.read(kwargs['read'])
+        if 'try_read' in kwargs:
+            try:
+                self.read(kwargs['try_read'])
+            except IOError as e:
+                pass
 
     def __getitem__(self, key):
         return self.data[key]
@@ -83,6 +89,7 @@ class Config(collections.MutableMapping):
     def read(self, config_dir=None, clear=False):
         """ read config from config_dir
             if config_dir is None, clear to default config
+            clear will clear to default before reading new file
         """
 
         if not config_dir:
