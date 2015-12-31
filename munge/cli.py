@@ -1,55 +1,62 @@
 
-import argparse
+from __future__ import print_function
+import click
 import sys
 import munge
 from munge import config
 
-# options:
-# input : source
-# output : source
 
 def get_config():
     return {}
 
-def write_config(conf_dir='~/.munge'):
-    print os.path.expanduser(conf_dir)
 
-class ListCodecs(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        print("LIST CODECS", option_string)
-
-def parse_args(argv, conf=None):
-    parser = argparse.ArgumentParser()
-    parser.add_argument('input', nargs=1, default='', help='input url')
-    parser.add_argument('output', nargs=1, default='-', help='output url')
-    parser.add_argument('--list-codecs', action='store_true', help='list all available codecs')
-
-    return parser.parse_known_args(argv)
+def list_codecs(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    print(munge.codec.list_codecs())
+    ctx.exit(0)
 
 
-def main(argv=sys.argv):
-    conf = config.MungeConfig()
-    (args, left) = parse_args(argv[1:], conf)
+def common_options(f):
+    f = click.option('--config', envvar='MUNGE_HOME', default=click.get_app_dir('munge'))(f)
+    f = click.option('--debug', is_flag=True, default=False)(f)
+    return f
 
-    if getattr(args, 'list_codecs', False):
-        print(munge.codec.list_codecs())
-        return 0
 
-    if hasattr(args, 'input'):
-        instr = args.input[0]
+@click.command()
+@common_options
+@click.argument('input', nargs=-1)
+@click.argument('output', nargs=1)
+@click.option('--list-codecs', is_flag=True, callback=list_codecs,
+    expose_value=False, is_eager=True)
+def main(**options):
+    conf = config.MungeConfig(try_read=options['config'])
 
-        src = config.parse_url(instr, conf.get('addrbook', []))
+#    if getattr(args, 'list_codecs', False):
+#        print(munge.codec.list_codecs())
+#        return 0
+    inp = options['input']
+    outp = options['output']
 
-    else:
-        # check config
-        pass
+    if not len(inp):
+        # if there's only 1 argument, it's (incorrectly) put in output
+        if outp:
+            inp = (outp,)
+            outp = None
+        else:
+            inp = ('-')
+    elif len(inp) != 1:
+        raise NotImplementedError("multi input not yet supported")
 
-    if hasattr(args, 'output'):
-        outstr = args.output[0]
-
-        dst = config.parse_url(outstr, conf.get('addrbook', {}))
-
+    src = config.parse_url(inp[0], conf.get('addrbook', []))
     data = src.cls().loadu(src.url.path)
-    dst.cls().dumpu(data, dst.url.path)
+
+    # use same input codec by defailt
+    if not outp:
+        dst = src
+        dst.cls().dumpu(data, '-')
+    else:
+        dst = config.parse_url(outp, conf.get('addrbook', {}))
+        dst.cls().dumpu(data, dst.url.path)
 
 

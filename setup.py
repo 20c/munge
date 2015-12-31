@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 long_description=open('facsimile/description.txt').read(),
 version = open('facsimile/VERSION').read().strip()
 requirements = open('facsimile/requirements.txt').read().split("\n")
-#test_requirements = open('facsimile/requirements-test.txt').read().split("\n")
+test_requirements = open('facsimile/requirements-test.txt').read().split("\n")
 
 
 setup(
@@ -21,7 +21,11 @@ setup(
     ],
     packages = find_packages(),
     install_requires=requirements,
-    scripts=['munge/bin/munge'],
-
+    test_requires=test_requirements,
+    entry_points={
+        'console_scripts': [
+            'munge=munge.cli:main',
+        ]
+    },
     zip_safe=False
 )
