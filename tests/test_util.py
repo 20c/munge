@@ -1,4 +1,5 @@
 
+import copy
 import munge.util
 import pytest
 
@@ -34,3 +35,16 @@ def test_recursive_update():
 
     munge.util.recursive_update(a, b)
     assert merged == a
+
+def test_recursive_update_copy():
+    d0 = {'a': {'b': {'x': '1', 'y': '2'}}}
+    d1 = {'a': {'c': {'gg': {'m': '3'}, 'xx': '4'}}}
+
+    r0 = {'a': {'b': {'x': '1', 'y': '2'}, 'c': {'gg': {'m': '3'}, 'xx': '4'}}}
+
+    d0cp = copy.deepcopy(d0)
+    res = munge.util.recursive_update(d0, d1, copy=True)
+    assert r0 == res
+    assert d0cp == d0
+    assert r0 != d0
+

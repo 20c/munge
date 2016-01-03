@@ -1,5 +1,6 @@
 
 import collections
+from copy import deepcopy
 
 
 def recursive_update(a, b, copy=False):
@@ -8,7 +9,7 @@ def recursive_update(a, b, copy=False):
     Note: will clobber non dict keys if b has a dict with same key
     """
     if copy:
-        a = a.copy()
+        a = deepcopy(a)
 
     for k, v in b.iteritems():
         if isinstance(v, collections.Mapping):
