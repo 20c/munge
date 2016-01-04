@@ -48,3 +48,36 @@ def test_recursive_update_copy():
     assert d0cp == d0
     assert r0 != d0
 
+def test_recursive_update_lists():
+    a = {
+        'a': 1,
+        'd': {
+            'a': 1,
+            },
+        'l': [1, 2, 5],
+        'l2': [1, 2, 3],
+        }
+    b = {
+        'b': 1,
+        'd': {
+            'a': 2,
+            'c': 3,
+            },
+        'l2': [4, 5],
+        'l3': [1, 2],
+        }
+    merged = {
+        'a': 1,
+        'b': 1,
+        'd': {
+            'a': 2,
+            'c': 3,
+            },
+        'l': [1, 2, 5],
+        'l2': [4, 5],
+        'l3': [1, 2],
+        }
+
+    munge.util.recursive_update(a, b, merge_lists=False)
+    assert merged == a
+

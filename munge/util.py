@@ -3,7 +3,7 @@ import collections
 from copy import deepcopy
 
 
-def recursive_update(a, b, copy=False):
+def recursive_update(a, b, copy=False, merge_lists=True):
     """
     recursive dict a.update(b), merges dicts and lists
     Note: will clobber non dict keys if b has a dict with same key
@@ -17,7 +17,7 @@ def recursive_update(a, b, copy=False):
                 recursive_update(a[k], v)
                 continue
 
-        elif type(v) is list:
+        elif merge_lists and type(v) is list:
             if type(a.get(k, None)) is list:
                 a[k].extend(v)
                 continue
