@@ -1,5 +1,2 @@
-
-# munge
-
 data manipulation client / library
 
