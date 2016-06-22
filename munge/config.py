@@ -147,24 +147,6 @@ class MungeConfig(Config):
         'codec':  'yaml'
     }
 
-class Endpoint(object):
-    def __init__(self, data):
-        pass
-
-def get_type(name, extra_schemes={}):
-    """
-    cls: class ctor
-    open: open func
-    open_args: what to pass to open
-    """
-    if name in extra_schemes:
-        return extra_schemes[name]
-
-    codec = munge.get_codec(name)
-    if codec:
-        return {'cls': codec}
-
-    return {}
 
 def find_cls(name, extra_schemes={}):
     if name in extra_schemes:

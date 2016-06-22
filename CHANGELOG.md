@@ -11,5 +11,7 @@
 ### Changed
 ### Deprecated
 ### Removed
+- unused get_type, Endpoint
+
 ### Security
 
