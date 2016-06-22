@@ -10,12 +10,15 @@ import munge.util
 
 # this wouldn't work with tabular data
 # need metaclass to allow users to set info once on class
-# TODO rename to BaseConfig
+# TODO rename to BaseConfig, set standard setup for Config?
 class Config(collections.MutableMapping):
     # internal base for defaults
     _base_defaults={
         'config': {},
+        # directory to look for config in
         'config_dir': None,
+        # name of config file
+        'config_name': 'config',
         'codec':  None,
 
         'autowrite': False,
@@ -86,16 +89,23 @@ class Config(collections.MutableMapping):
     def clear(self):
         self.data = self.default()
 
-    def read(self, config_dir=None, clear=False):
+    def read(self, config_dir=None, config_name=None, clear=False):
         """ read config from config_dir
             if config_dir is None, clear to default config
             clear will clear to default before reading new file
         """
 
+        # get name of config directory
         if not config_dir:
-            if not self.defaults['config_dir']:
-                raise IOError("default config dir not set")
-            config_dir = self.defaults['config_dir']
+            config_dir = self.defaults.get('config_dir', None)
+        if not config_dir:
+            raise KeyError('config_dir not set')
+
+        # get name of config file
+        if not config_name:
+            config_name = self.defaults.get('config_name', None)
+        if not config_name:
+            raise KeyError('config_name not set')
 
         conf_path = os.path.expanduser(config_dir)
         if not os.path.exists(conf_path):
@@ -184,7 +194,7 @@ def parse_url(url, extra_schemes={}):
     """
 
     if not url:
-        url = ""
+        raise ValueError('url cannot be empty')
 
     cls = None
     res = urlsplit(url)

@@ -24,6 +24,7 @@ def common_options(f):
 
 
 @click.command()
+@click.version_option()
 @common_options
 @click.argument('input', nargs=-1)
 @click.argument('output', nargs=1)
@@ -32,9 +33,6 @@ def common_options(f):
 def main(**options):
     conf = config.MungeConfig(try_read=options['config'])
 
-#    if getattr(args, 'list_codecs', False):
-#        print(munge.codec.list_codecs())
-#        return 0
     inp = options['input']
     outp = options['output']
 

@@ -28,6 +28,11 @@ def test_parse_url():
     json = munge.get_codec('json')
     yaml = munge.get_codec('yaml')
 
+    # fail on empty
+    with pytest.raises(ValueError):
+        config.parse_url('')
+
+    conf = config.parse_url('yaml:test')
     conf = config.parse_url('yaml:test')
     assert yaml == conf.cls
     assert 'test' == conf.url.path
@@ -79,16 +84,20 @@ class DefaultConfig(munge.Config):
     class Defaults:
         config=default_config
 
+
 def mk_base_conf():
     return munge.config.Config(**DefaultConfig.defaults)
 
+
 def mk_derived_conf():
     return DefaultConfig()
+
 
 conf_obj_ctors = (
     mk_base_conf,
     mk_derived_conf,
 )
+
 
 def mk_base_conf0():
     conf = munge.config.Config(**DefaultConfig.defaults)
@@ -135,20 +144,27 @@ def test_config_obj(conf):
     assert default_config == conf.data
 
 
-def test_config_read(conf):
+def test_base_config_read():
     cfg = munge.Config()
 
     assert cfg._base_defaults == cfg.defaults
 
     with pytest.raises(IOError):
-        conf.read('nonexistant')
+        cfg.read('nonexistant')
 
     # read with no config_dir and no default
-    with pytest.raises(IOError):
+    with pytest.raises(KeyError) as e:
         cfg.read()
+    assert 'config_dir not set' == e.value.message
 
-    # config_dir from arg
+    # config_dir from arg, name set from base_defaults
     assert conf0_data == cfg.read(conf0_dir).data
+
+    # config_dir from arg, name set to nome
+    cfg.defaults['config_name'] = None
+    with pytest.raises(KeyError) as e:
+        cfg.read(conf0_dir)
+    assert 'config_name not set' == e.value.message
 
     # config_dir from defaults
     cfg = munge.Config()
@@ -168,6 +184,20 @@ def test_config_read(conf):
 
     with pytest.raises(IOError):
         cfg.read(os.getcwd())
+
+
+def test_base_config_mapping():
+    cfg = munge.Config(read=conf0_dir)
+    data = conf0_data.copy()
+    assert data == cfg.data
+
+    # test __len__
+    assert len(data) == len(cfg)
+
+    # test __del__
+    del data['addrbook']
+    del cfg['addrbook']
+    assert data == cfg.data
 
 
 def test_config_write(conf, tmpdir):
