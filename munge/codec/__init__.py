@@ -38,7 +38,7 @@ def find_datafile(name, search_path=('.'), codecs=get_codecs()):
     rv = []
 
     if isinstance(search_path, basestring):
-        search_path = [search_path]
+        search_path = (search_path,)
 
     #print "search path ", str(search_path)
 

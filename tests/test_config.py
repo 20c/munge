@@ -180,11 +180,42 @@ def test_base_config_read():
 
     with pytest.raises(IOError):
         cfg = munge.Config(read='nonexistant')
-    cfg = munge.Config(try_read='nonexistant')
 
     with pytest.raises(IOError):
         cfg.read(os.getcwd())
 
+
+def test_base_config_clear():
+    cfg = munge.Config(read=conf0_dir)
+    assert conf0_data == cfg.data
+    assert conf0_dir == cfg.meta['config_dir']
+
+    cfg.clear()
+    assert not cfg.meta
+
+
+def test_config_clear(conf):
+    assert default_config == conf.default()
+    assert default_config == conf.data
+    conf.data['foo'] = 42
+    assert default_config != conf.data
+    assert not conf.meta
+    conf.clear()
+    assert default_config == conf.data
+
+
+def test_base_config_ctor_try_read():
+    cfg = munge.Config(try_read='nonexistant')
+    assert not cfg.meta
+
+def test_base_config_ctor_try_read():
+    cfg = munge.Config()
+    cfg.try_read(['nonexistant', 'nonexistant2'])
+    assert not cfg.meta
+
+    cfg.try_read(['nonexistant', 'nonexistant2', conf0_dir])
+    assert conf0_data == cfg.data
+    assert cfg.meta
 
 def test_base_config_mapping():
     cfg = munge.Config(read=conf0_dir)

@@ -5,6 +5,8 @@
 ### Added
 - CHANGELOG!
 - allow changing config_name
+- try_read
+- config.meta
 
 ### Fixed
 

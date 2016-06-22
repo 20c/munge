@@ -52,10 +52,7 @@ class Config(collections.MutableMapping):
         if 'read' in kwargs:
             self.read(kwargs['read'])
         if 'try_read' in kwargs:
-            try:
-                self.read(kwargs['try_read'])
-            except IOError as e:
-                pass
+            self.try_read(kwargs['try_read'])
 
     def __getitem__(self, key):
         return self.data[key]
@@ -88,13 +85,25 @@ class Config(collections.MutableMapping):
 
     def clear(self):
         self.data = self.default()
+        self._meta_config_dir = None
+
+    @property
+    def meta(self):
+        if not self._meta_config_dir:
+            return None
+
+        return {
+            'config_dir': self._meta_config_dir,
+            }
 
     def read(self, config_dir=None, config_name=None, clear=False):
-        """ read config from config_dir
-            if config_dir is None, clear to default config
-            clear will clear to default before reading new file
+        """
+        read config from config_dir
+        if config_dir is None, clear to default config
+        clear will clear to default before reading new file
         """
 
+# TODO should probably allow config_dir to be a list as well
         # get name of config directory
         if not config_dir:
             config_dir = self.defaults.get('config_dir', None)
@@ -111,18 +120,35 @@ class Config(collections.MutableMapping):
         if not os.path.exists(conf_path):
             raise IOError("config dir not found at %s" % (conf_path,))
 
-        if clear:
-            self.clear()
-
         config = munge.load_datafile('config', conf_path, default=None)
 
         if not config:
             raise IOError("config file not found in %s" % (conf_path,))
 
+        if clear:
+            self.clear()
+
         munge.util.recursive_update(self.data, config)
         self._meta_config_dir = conf_path
-
         return self
+
+    def try_read(self, config_dir=None, **kwargs):
+        """
+        try reading without throwing an error
+        config_dir may be a list of directories to try in order, if so it
+        will return after the first successful read
+        other args will be passed direction to read()
+        """
+        if isinstance(config_dir, basestring):
+            config_dir = (config_dir,)
+
+        for cdir in config_dir:
+            try:
+                self.read(cdir, **kwargs)
+                return cdir
+
+            except IOError as e:
+                pass
 
     def write(self, config_dir=None, codec=None):
         if not config_dir:
