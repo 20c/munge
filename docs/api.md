@@ -5,6 +5,8 @@ Unless `MUNGE_EXPLICIT_IMPORT` is defined and true, munge will load all codecs i
 
 ## API
 
+
+
 ### Config
 
 Munge provides the config class it uses internally to be able to parse configs of any codec it supports and provide a dict of options
@@ -27,7 +29,7 @@ Munge provides the config class it uses internally to be able to parse configs o
 #### example use with click
 
     @cli.command()
-    @click.option('--config', envvar='APPNAME_HOME', default=default=click.get_app_dir('appname'))
+    @click.option('--config', envvar='APPNAME_HOME', default=click.get_app_dir('appname'))
     def do_stuff(config):
         cfg = Config(read=config)
 

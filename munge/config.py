@@ -120,7 +120,7 @@ class Config(collections.MutableMapping):
         if not os.path.exists(conf_path):
             raise IOError("config dir not found at %s" % (conf_path,))
 
-        config = munge.load_datafile('config', conf_path, default=None)
+        config = munge.load_datafile(config_name, conf_path, default=None)
 
         if not config:
             raise IOError("config file not found in %s" % (conf_path,))
@@ -150,15 +150,27 @@ class Config(collections.MutableMapping):
             except IOError as e:
                 pass
 
-    def write(self, config_dir=None, codec=None):
+    def write(self, config_dir=None, config_name=None, codec=None):
+        """
+        writes config to config_dir using config_name
+        """
+        # get name of config directory
         if not config_dir:
             config_dir = self._meta_config_dir
             if not config_dir:
                 raise IOError("config_dir not set")
+
+        # get name of config file
+        if not config_name:
+            config_name = self.defaults.get('config_name', None)
+        if not config_name:
+            raise KeyError('config_name not set')
+
         if codec:
             codec = munge.get_codec(codec)()
         else:
             codec = munge.get_codec(self.defaults['codec'])()
+
         config_dir = os.path.expanduser(config_dir)
         if not os.path.exists(config_dir):
             os.mkdir(config_dir)
