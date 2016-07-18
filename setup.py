@@ -1,7 +1,7 @@
 
 from setuptools import setup, find_packages
 
-long_description=open('facsimile/description.txt').readline().strip(),
+long_description=open('facsimile/description.txt').readline().strip()
 version = open('facsimile/VERSION').read().strip()
 requirements = open('facsimile/requirements.txt').read().split("\n")
 test_requirements = open('facsimile/requirements-test.txt').read().split("\n")
