@@ -1,10 +1,16 @@
 
 from __future__ import print_function
+from __future__ import absolute_import
+
 import click
 import sys
 import munge
 from munge import config
+import munge.click
 
+
+class Context(munge.click.Context):
+    app_name = 'munge'
 
 def get_config():
     return {}
@@ -24,6 +30,8 @@ def common_options(f):
 
 
 @click.command()
+#@Context.pass_context()
+#@Context.options
 @click.version_option()
 @common_options
 @click.argument('input', nargs=-1)
