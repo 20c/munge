@@ -12,6 +12,11 @@ def expand_env_var(path):
     """
 
 class Context(object):
+    # TODO replace with full logger config
+    log_format = '%(message)s'
+    log_format_debug = '%(name)s %(message)s %(filename)s:%(lineno)d'
+    log_format_file = '%(asctime)s %(levelname)s %(message)s'
+
     @classmethod
     def search_path(cls):
         return ['$%s_HOME' % cls.app_name.upper(),
@@ -23,11 +28,12 @@ class Context(object):
         f = click.option('--debug', help='enable extra debug output', is_flag=True, default=None)(f)
         f = click.option('--home', help='specify the home directory, by default will check in order: ' + ', '.join(cls.search_path()), default=None)(f)
         f = click.option('--verbose', help='enable more verbose output', is_flag=True, default=None)(f)
+        f = click.option('--quiet', help='no output at all', is_flag=True, default=None)(f)
         return f
 
     @classmethod
     def get_options(cls, kwargs):
-        keys = ('debug', 'home', 'verbose')
+        keys = ('debug', 'home', 'verbose', 'quiet')
         return {k: kwargs.pop(k, None) for k in keys}
 
     @classmethod
@@ -52,6 +58,9 @@ class Context(object):
 
         if opt.get('verbose', None) is not None:
             self.verbose = opt['verbose']
+
+        if opt.get('quiet', None) is not None:
+            self.quiet = opt['quiet']
 
         # TODO - probably should warn or error if passing multiple home values in?
         if opt.get('home', None) is not None:
@@ -78,8 +87,18 @@ class Context(object):
         """
         call after updating options
         """
+        # remove root logger, so we can reinit
+        # TODO only remove our own
+        logging.getLogger().handlers = []
+
         if self.debug:
-            logging.basicConfig(level=logging.DEBUG)
+            logging.basicConfig(level=logging.DEBUG, format=self.log_format_debug)
+        elif self.verbose:
+            logging.basicConfig(level=logging.INFO, format=self.log_format)
+        elif not self.quiet:
+            logging.basicConfig(level=logging.ERROR, format=self.log_format)
+        else:
+            logging.getLogger().addHandler(logging.NullHandler())
 
     def msg(self, msg, *args):
         """Logs a message to stderr."""
