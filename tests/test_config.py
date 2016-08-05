@@ -22,6 +22,7 @@ extra_schemes = {
     }
 }
 
+
 def test_parse_url():
     django = munge.get_codec('django')
     mysql = munge.get_codec('mysql')
@@ -185,6 +186,16 @@ def test_base_config_read():
         cfg.read(os.getcwd())
 
 
+def test_config_copy():
+    cfg = munge.Config(read=conf0_dir)
+    cp = cfg.copy()
+    assert cfg == cp
+    assert cfg.meta == cp.meta
+
+    cp.data['NEW'] = 'KEY'
+    assert 'NEW' not in cfg.data
+
+
 def test_base_config_clear():
     cfg = munge.Config(read=conf0_dir)
     assert conf0_data == cfg.data
@@ -208,6 +219,7 @@ def test_base_config_ctor_try_read():
     cfg = munge.Config(try_read='nonexistant')
     assert not cfg.meta
 
+
 def test_base_config_ctor_try_read():
     cfg = munge.Config()
     cfg.try_read(['nonexistant', 'nonexistant2'])
@@ -216,6 +228,7 @@ def test_base_config_ctor_try_read():
     cfg.try_read(['nonexistant', 'nonexistant2', conf0_dir])
     assert conf0_data == cfg.data
     assert cfg.meta
+
 
 def test_base_config_mapping():
     cfg = munge.Config(read=conf0_dir)

@@ -72,6 +72,12 @@ class Config(collections.MutableMapping):
     def __len__(self):
         return len(self.data)
 
+    def copy(self):
+        rv = self.__class__(data=self.data.copy())
+        # copy meta
+        rv._meta_config_dir = self._meta_config_dir
+        return rv
+
     def get_nested(self, *args):
         """
         get a nested value, returns None if path does not exist
