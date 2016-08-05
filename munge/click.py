@@ -100,24 +100,3 @@ class Context(object):
         else:
             logging.getLogger().addHandler(logging.NullHandler())
 
-    def msg(self, msg, *args):
-        """Logs a message to stderr."""
-        if args:
-            msg %= args
-        click.echo(msg, file=sys.stderr)
-
-    def print(self, msg, *args):
-        """logs a message to stderr unless quiet is enabled"""
-        if not self.quiet:
-            self.msg(msg, *args)
-
-    def vprint(self, msg, *args):
-        """logs a message to stderr only if debug is enabled"""
-        if self.verbose:
-            self.msg(msg, *args)
-
-    def dprint(self, msg, *args):
-        """logs a message to stderr only if debug is enabled"""
-        if self.debug:
-            self.msg(msg, *args)
-
