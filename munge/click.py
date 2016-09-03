@@ -89,6 +89,7 @@ class Context(object):
         """
         # remove root logger, so we can reinit
         # TODO only remove our own
+        # TODO move to _init, let overrides use init()
         logging.getLogger().handlers = []
 
         if self.debug:
