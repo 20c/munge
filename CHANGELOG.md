@@ -10,6 +10,11 @@
 ### Security
 
 
+## [0.3.0]
+### Fixed
+- version bump for proper semantic versioning
+
+
 ## [0.2.1]
 
 ### Added
