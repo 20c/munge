@@ -4,6 +4,8 @@
 ## [Unreleased]
 ### Added
 ### Fixed
+- set click.Context.home when config is found
+
 ### Changed
 ### Deprecated
 ### Removed

@@ -80,6 +80,8 @@ class Context(object):
                     search_path.append(path)
 
             self.config = self.config_class(try_read=search_path)
+            if self.config.meta:
+                self.home = self.config.meta['config_dir']
 
         self.init()
 
