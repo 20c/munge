@@ -4,12 +4,17 @@
 ## [Unreleased]
 ### Added
 ### Fixed
-- set click.Context.home when config is found
-
 ### Changed
 ### Deprecated
 ### Removed
 ### Security
+
+
+## [0.4.0]
+### Added
+- py3 support
+### Fixed
+- set click.Context.home when config is found
 
 
 ## [0.3.0]
