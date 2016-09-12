@@ -1,3 +1,5 @@
+from builtins import str
+from past.builtins import basestring
 
 import os
 import imp
@@ -11,7 +13,7 @@ def add_codec(exts, cls):
         exts = tuple(exts)
 
     # check for dupe extensions
-    dupe_exts = set(ext for k in __codecs.keys() for ext in k).intersection(exts)
+    dupe_exts = set(ext for k in list(__codecs.keys()) for ext in k).intersection(exts)
     if dupe_exts:
         raise ValueError("duplicate extension %s" % str(dupe_exts))
 
@@ -21,10 +23,10 @@ def get_codecs():
     return __codecs
 
 def list_codecs():
-    return [ext[0] for ext in get_codecs().keys()]
+    return [ext[0] for ext in list(get_codecs().keys())]
 
 def get_codec(tag, codecs=get_codecs()):
-    for exts, cls in codecs.items():
+    for exts, cls in list(codecs.items()):
         if tag in exts:
             return cls
 
@@ -51,7 +53,7 @@ def find_datafile(name, search_path=('.'), codecs=get_codecs()):
             if os.path.exists(fq_filename):
                 rv.append((cls, fq_filename))
 
-    for exts, obj in codecs.items():
+    for exts, obj in list(codecs.items()):
         for ext in exts:
             filename = "%s.%s" % (name, ext)
             for each in search_path:

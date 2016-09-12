@@ -1,4 +1,6 @@
 from __future__ import print_function
+from builtins import str
+from builtins import object
 
 import collections
 import filecmp
@@ -16,7 +18,7 @@ this_dir = os.path.dirname(__file__)
 data_dir = os.path.join(this_dir, 'data')
 
 test_codecs=[]
-for tags, cls in munge.get_codecs().items():
+for tags, cls in list(munge.get_codecs().items()):
     if any(name in ('json', 'yaml') for name in tags):
         test_codecs.append(cls)
 

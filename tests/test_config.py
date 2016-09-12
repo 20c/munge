@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 
 import collections
 import copy
@@ -82,7 +84,7 @@ class DefaultConfig(munge.Config):
         'config_dir': '~/.mungeX',
         'codec':  'yaml'
     }
-    class Defaults:
+    class Defaults(object):
         config=default_config
 
 
@@ -156,7 +158,7 @@ def test_base_config_read():
     # read with no config_dir and no default
     with pytest.raises(KeyError) as e:
         cfg.read()
-    assert 'config_dir not set' == e.value.message
+    assert "'config_dir not set'" == str(e.value)
 
     # config_dir from arg, name set from base_defaults
     assert conf0_data == cfg.read(conf0_dir).data
@@ -165,7 +167,7 @@ def test_base_config_read():
     cfg.defaults['config_name'] = None
     with pytest.raises(KeyError) as e:
         cfg.read(conf0_dir)
-    assert 'config_name not set' == e.value.message
+    assert "'config_name not set'" == str(e.value)
 
     # config_dir from defaults
     cfg = munge.Config()

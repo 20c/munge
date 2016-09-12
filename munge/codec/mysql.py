@@ -1,5 +1,9 @@
 
 from __future__ import absolute_import
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 
 from munge.base import CodecBase
 
@@ -10,7 +14,7 @@ try:
 except:
     pass
 
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 
 
 class MysqlEndpoint(object):
@@ -30,7 +34,7 @@ class Mysql(CodecBase):
 
     def open(self, url, mode='r', stdio=True):
         res = urlsplit(url)
-        print "opening ", url
+        print("opening ", url)
         (db, sep, table) = res.path.strip('/').partition('/')
 
         fobj = MysqlEndpoint(MySQLdb.connect(host=res.hostname, user=res.username, passwd=res.password, cursorclass=MySQLdb.cursors.DictCursor), database=db, table=table)

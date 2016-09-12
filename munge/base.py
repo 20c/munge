@@ -1,11 +1,15 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 
 import os
 import sys
-from urlparse import urlsplit
-import urllib2
+from urllib.parse import urlsplit
+import urllib.request, urllib.error, urllib.parse
 import requests
 
 from . import codec
+from future.utils import with_metaclass
 
 
 class Meta(type):
@@ -23,9 +27,7 @@ class Meta(type):
         codec.add_codec(cls.extensions, cls)
 
 
-class CodecBase(object):
-    __metaclass__=Meta
-
+class CodecBase(with_metaclass(Meta, object)):
     dict_type=dict
     float_type=float
 

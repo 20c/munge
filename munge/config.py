@@ -1,7 +1,10 @@
+from future import standard_library
+standard_library.install_aliases()
+from past.builtins import basestring
 
 from collections import namedtuple
 import collections
-from urlparse import urlsplit
+from urllib.parse import urlsplit
 import os
 
 import munge
@@ -45,7 +48,7 @@ class Config(collections.MutableMapping):
             self.defaults = self._base_defaults.copy()
 
         # override anything passed to kwargs
-        for k,v in kwargs.items():
+        for k,v in list(kwargs.items()):
             if k in self.defaults:
                 self.defaults[k] = v
 
