@@ -1,3 +1,4 @@
+from __future__ import print_function
 
 import collections
 import filecmp
@@ -50,7 +51,7 @@ class Codec(object):
         prefix = os.path.join(this_dir, name)
         for ext in self.cls.extensions:
             fq_name = "%s.%s" % (prefix, ext)
-            print "checking", fq_name
+            print("checking", fq_name)
             if os.path.exists(fq_name):
                 return fq_name
 
@@ -60,16 +61,16 @@ class Codec(object):
 
 @pytest.fixture(scope="module", params=data)
 def dataset(request):
-    print request.param
+    print(request.param)
     obj = request.param()
-    print obj
+    print(obj)
     assert obj.expected
     return obj
     return request.param()
 
 @pytest.fixture(scope="module", params=test_codecs)
 def codec(request):
-    print request.param
+    print(request.param)
     return Codec(request.param)
 
 def test_codec_registry():
@@ -106,8 +107,8 @@ def test_load(codec, dataset):
 def test_loads(codec, dataset):
     src = codec.cls()
     data = codec.open_file(dataset.filename)
-    print data
-    print data.read()
+    print(data)
+    print(data.read())
     assert dataset.expected == src.loads(codec.open_file(dataset.filename).read())
 
 def test_loadu(codec, dataset):
@@ -135,8 +136,8 @@ def test_dumpu(codec, dataset, tmpdir):
 def test_find_datafile(codec, dataset):
     obj = codec.cls()
 
-    print dataset.filename
-    print data_dir
+    print(dataset.filename)
+    print(data_dir)
     files = munge.find_datafile('set0', data_dir)
     # should == number of codec tests
     assert files
