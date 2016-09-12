@@ -13,6 +13,7 @@
 ## [0.4.0]
 ### Added
 - py3 support
+
 ### Fixed
 - set click.Context.home when config is found
 
