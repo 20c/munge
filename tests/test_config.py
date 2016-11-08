@@ -204,7 +204,7 @@ def test_base_config_clear():
     assert conf0_dir == cfg.meta['config_dir']
 
     cfg.clear()
-    assert not cfg.meta
+    assert {} == cfg.meta
 
 
 def test_config_clear(conf):
@@ -219,13 +219,13 @@ def test_config_clear(conf):
 
 def test_base_config_ctor_try_read():
     cfg = munge.Config(try_read='nonexistant')
-    assert not cfg.meta
+    assert {} == cfg.meta
 
 
 def test_base_config_ctor_try_read():
     cfg = munge.Config()
     cfg.try_read(['nonexistant', 'nonexistant2'])
-    assert not cfg.meta
+    assert {} == cfg.meta
 
     cfg.try_read(['nonexistant', 'nonexistant2', conf0_dir])
     assert conf0_data == cfg.data

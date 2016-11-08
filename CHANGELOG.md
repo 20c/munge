@@ -5,6 +5,8 @@
 ### Added
 ### Fixed
 ### Changed
+- empty meta returns empty dict instead of None
+
 ### Deprecated
 ### Removed
 ### Security

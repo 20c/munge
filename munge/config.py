@@ -102,7 +102,7 @@ class Config(collections.MutableMapping):
     @property
     def meta(self):
         if not self._meta_config_dir:
-            return None
+            return {}
 
         return {
             'config_dir': self._meta_config_dir,
