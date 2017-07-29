@@ -3,9 +3,11 @@ from __future__ import print_function
 from __future__ import absolute_import
 from builtins import object
 
+
 import click
 import os
 import logging
+
 
 def expand_env_var(path):
     """
@@ -22,7 +24,17 @@ class Context(object):
     def search_path(cls):
         return ['$%s_HOME' % cls.app_name.upper(),
                 os.path.join('.', '.' + cls.app_name),
+                os.path.expanduser(os.path.join('~', '.' + cls.app_name)),
                 click.get_app_dir(cls.app_name)]
+
+    @classmethod
+    def option_list(cls):
+        return [
+            dict(name='--debug', help='enable extra debug output', is_flag=True, default=None),
+            dict(name='--home', help='specify the home directory, by default will check in order: ' + ', '.join(cls.search_path()), default=None),
+            dict(name='--verbose', help='enable more verbose output', is_flag=True, default=None),
+            dict(name='--quiet', help='no output at all', is_flag=True, default=None),
+            ]
 
     @classmethod
     def options(cls, f):
@@ -33,13 +45,26 @@ class Context(object):
         return f
 
     @classmethod
-    def get_options(cls, kwargs):
+    def pop_options(cls, kwargs):
         keys = ('debug', 'home', 'verbose', 'quiet')
         return {k: kwargs.pop(k, None) for k in keys}
 
     @classmethod
+    def get_options(cls, kwargs):
+        """
+        deprecated
+        """
+        return cls.pop_options(kwargs)
+
+    @classmethod
     def pass_context(cls):
         return click.make_pass_decorator(cls, ensure=True)
+
+    @property
+    def log(self):
+        if not getattr(self, '_logger', None):
+            self._logger = logging.getLogger(cls.app_name)
+        return self._logger
 
     def __init__(self, **kwargs):
         self.debug = False
@@ -103,4 +128,8 @@ class Context(object):
             logging.basicConfig(level=logging.ERROR, format=self.log_format)
         else:
             logging.getLogger().addHandler(logging.NullHandler())
+
+# TODO add config by dict
+#        for handler in logging.getLogger().handlers:
+#            handler.addFilter(logging.Filter(self.app_name))
 

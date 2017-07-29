@@ -3,6 +3,9 @@
 
 ## [Unreleased]
 ### Added
+- option_list to Context
+- log to Context
+
 ### Fixed
 ### Changed
 - empty meta returns empty dict instead of None
