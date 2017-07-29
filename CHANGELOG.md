@@ -5,6 +5,7 @@
 ### Added
 - option_list to Context
 - log to Context
+- config search path includes ~/.$APP_NAME
 
 ### Fixed
 ### Changed

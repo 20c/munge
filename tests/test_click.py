@@ -26,7 +26,7 @@ def ctx():
 
 
 def test_searchpath(ctx):
-    assert 3 == len(ctx.search_path())
+    assert 4 == len(ctx.search_path())
 
 
 def test_find_home_kwargs(ctx):
