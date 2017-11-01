@@ -1,19 +1,23 @@
 
-# Change Log
+# Change log for munge
 
 ## [Unreleased]
+### Added
+### Fixed
+### Changed
+### Deprecated
+### Removed
+### Security
+
+
+## [0.5.0]
 ### Added
 - option_list to Context
 - log to Context
 - config search path includes ~/.$APP_NAME
 
-### Fixed
 ### Changed
 - empty meta returns empty dict instead of None
-
-### Deprecated
-### Removed
-### Security
 
 
 ## [0.4.0]
