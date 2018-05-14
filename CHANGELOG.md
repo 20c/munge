@@ -4,6 +4,8 @@
 ## [Unreleased]
 ### Added
 ### Fixed
+- log on click Context referencing non-existant `cls` property
+
 ### Changed
 ### Deprecated
 ### Removed
