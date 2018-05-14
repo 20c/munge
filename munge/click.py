@@ -63,7 +63,7 @@ class Context(object):
     @property
     def log(self):
         if not getattr(self, '_logger', None):
-            self._logger = logging.getLogger(cls.app_name)
+            self._logger = logging.getLogger(self.app_name)
         return self._logger
 
     def __init__(self, **kwargs):
