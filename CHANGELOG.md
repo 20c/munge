@@ -7,6 +7,8 @@
 - log on click Context referencing non-existant `cls` property
 
 ### Changed
+- decrease PyYAML requirement to >=3.10
+
 ### Deprecated
 ### Removed
 ### Security

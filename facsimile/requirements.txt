@@ -1,4 +1,4 @@
-PyYAML>=3.11
+PyYAML>=3.10
 click>=5.1
 future>=0.15.2,<1
 requests>=2.6.0,<3
