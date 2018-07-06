@@ -1,5 +1,7 @@
 *.egg-info
 *.pyc
-coverage.xml
+.cache/
 .coverage
+.pytest_cache/
+coverage.xml
 dist/
