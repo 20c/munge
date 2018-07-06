@@ -4,14 +4,18 @@
 ## [Unreleased]
 ### Added
 ### Fixed
+### Changed
+### Deprecated
+### Removed
+### Security
+
+
+## [0.6.0]
+### Fixed
 - log on click Context referencing non-existant `cls` property
 
 ### Changed
 - decrease PyYAML requirement to >=3.10
-
-### Deprecated
-### Removed
-### Security
 
 
 ## [0.5.0]
