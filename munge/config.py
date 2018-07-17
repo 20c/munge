@@ -41,16 +41,15 @@ class Config(collections.MutableMapping):
 
         # use derived class defaults if available
         if hasattr(self, 'defaults'):
-            derived_defaults = self.defaults
-            self.defaults = self._base_defaults.copy()
-            self.defaults.update(derived_defaults)
+            self._defaults = self._base_defaults.copy()
+            self._defaults.update(self.defaults)
         else:
-            self.defaults = self._base_defaults.copy()
+            self._defaults = self._base_defaults.copy()
 
         # override anything passed to kwargs
         for k,v in list(kwargs.items()):
-            if k in self.defaults:
-                self.defaults[k] = v
+            if k in self._defaults:
+                self._defaults[k] = v
 
         self.data = kwargs.get('data', self.default())
         self._meta_config_dir = ''
@@ -93,7 +92,7 @@ class Config(collections.MutableMapping):
         return data
 
     def default(self):
-        return self.defaults['config'].copy()
+        return self._defaults['config'].copy()
 
     def clear(self):
         self.data = self.default()
@@ -118,13 +117,13 @@ class Config(collections.MutableMapping):
 # TODO should probably allow config_dir to be a list as well
         # get name of config directory
         if not config_dir:
-            config_dir = self.defaults.get('config_dir', None)
+            config_dir = self._defaults.get('config_dir', None)
         if not config_dir:
             raise KeyError('config_dir not set')
 
         # get name of config file
         if not config_name:
-            config_name = self.defaults.get('config_name', None)
+            config_name = self._defaults.get('config_name', None)
         if not config_name:
             raise KeyError('config_name not set')
 
@@ -174,14 +173,14 @@ class Config(collections.MutableMapping):
 
         # get name of config file
         if not config_name:
-            config_name = self.defaults.get('config_name', None)
+            config_name = self._defaults.get('config_name', None)
         if not config_name:
             raise KeyError('config_name not set')
 
         if codec:
             codec = munge.get_codec(codec)()
         else:
-            codec = munge.get_codec(self.defaults['codec'])()
+            codec = munge.get_codec(self._defaults['codec'])()
 
         config_dir = os.path.expanduser(config_dir)
         if not os.path.exists(config_dir):

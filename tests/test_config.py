@@ -150,7 +150,7 @@ def test_config_obj(conf):
 def test_base_config_read():
     cfg = munge.Config()
 
-    assert cfg._base_defaults == cfg.defaults
+    assert cfg._base_defaults == cfg._defaults
 
     with pytest.raises(IOError):
         cfg.read('nonexistant')
@@ -164,18 +164,18 @@ def test_base_config_read():
     assert conf0_data == cfg.read(conf0_dir).data
 
     # config_dir from arg, name set to nome
-    cfg.defaults['config_name'] = None
+    cfg._defaults['config_name'] = None
     with pytest.raises(KeyError) as e:
         cfg.read(conf0_dir)
     assert "'config_name not set'" == str(e.value)
 
     # config_dir from defaults
     cfg = munge.Config()
-    cfg.defaults['config_dir'] = conf0_dir
+    cfg._defaults['config_dir'] = conf0_dir
     assert conf0_data == cfg.read().data
 
     # defaults is copy
-    assert cfg._base_defaults != cfg.defaults
+    assert cfg._base_defaults != cfg._defaults
 
     # ctor read
     cfg = munge.Config(read=conf0_dir)
@@ -196,6 +196,14 @@ def test_config_copy():
 
     cp.data['NEW'] = 'KEY'
     assert 'NEW' not in cfg.data
+
+
+def test_config_defaults():
+    cfg0 = DefaultConfig(read=conf0_dir)
+    assert cfg0.defaults == DefaultConfig.defaults
+    cfg1 = DefaultConfig(read=conf0_dir)
+    assert cfg0.defaults == cfg1.defaults
+    assert cfg0._defaults == cfg1._defaults
 
 
 def test_base_config_clear():
@@ -254,19 +262,19 @@ def test_config_write(conf, tmpdir):
     conf.write(str(cdir), 'yaml')
 
     # create an exact copy
-    kwargs = conf.defaults.copy()
+    kwargs = conf._defaults.copy()
     kwargs['read'] = str(cdir)
     conf2 = type(conf)(**kwargs)
 
     assert conf == conf2
-    assert conf.defaults == conf2.defaults
+    assert conf._defaults == conf2._defaults
     assert conf.data == conf2.data
 
 #    conf = type(conf)(read=str(cdir))
     shutil.rmtree(str(cdir))
     conf2.write()
     assert conf == conf2
-    assert conf.defaults == conf2.defaults
+    assert conf._defaults == conf2._defaults
     assert conf.data == conf2.data
 
 def test_conf0(conf0):
