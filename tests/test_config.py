@@ -204,6 +204,7 @@ def test_config_defaults():
     cfg1 = DefaultConfig(read=conf0_dir)
     assert cfg0.defaults == cfg1.defaults
     assert cfg0._defaults == cfg1._defaults
+    assert cfg0.default() == cfg1.default()
 
 
 def test_base_config_clear():
@@ -230,7 +231,7 @@ def test_base_config_ctor_try_read():
     assert {} == cfg.meta
 
 
-def test_base_config_ctor_try_read():
+def test_base_config_ctor_try_read2():
     cfg = munge.Config()
     cfg.try_read(['nonexistant', 'nonexistant2'])
     assert {} == cfg.meta

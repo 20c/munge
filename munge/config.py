@@ -4,6 +4,7 @@ from past.builtins import basestring
 
 from collections import namedtuple
 import collections
+import copy
 from urllib.parse import urlsplit
 import os
 
@@ -92,7 +93,7 @@ class Config(collections.MutableMapping):
         return data
 
     def default(self):
-        return self._defaults['config'].copy()
+        return copy.deepcopy(self._defaults['config'])
 
     def clear(self):
         self.data = self.default()

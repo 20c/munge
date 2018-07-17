@@ -31,8 +31,11 @@ class CodecBase(with_metaclass(Meta, object)):
     dict_type=dict
     float_type=float
 
-    def __init__(self, config={}):
-        self.config = config
+    def __init__(self, config=None):
+        if  config:
+            self.config = config
+        else:
+            self.config = dict()
 
     @property
     def extension(self):
