@@ -1,5 +1,5 @@
 from builtins import str
-from past.builtins import basestring
+from past.builtins import str
 
 import os
 import imp
@@ -39,7 +39,7 @@ def find_datafile(name, search_path=('.'), codecs=get_codecs()):
     """
     rv = []
 
-    if isinstance(search_path, basestring):
+    if isinstance(search_path, str):
         search_path = (search_path,)
 
     #print "search path ", str(search_path)
