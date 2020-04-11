@@ -1,5 +1,4 @@
 import os
-import imp
 
 __all__ = ['django', 'mysql', 'json', 'yaml']
 __codecs = {}
