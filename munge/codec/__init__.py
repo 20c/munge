@@ -1,6 +1,3 @@
-from builtins import str
-from past.builtins import str
-
 import os
 import imp
 
@@ -42,8 +39,6 @@ def find_datafile(name, search_path=('.'), codecs=get_codecs()):
     if isinstance(search_path, str):
         search_path = (search_path,)
 
-    #print "search path ", str(search_path)
-
     ext = os.path.splitext(name)[1][1:]
 
     cls = get_codec(ext)
@@ -74,7 +69,7 @@ def load_datafile(name, search_path=('.'), codecs=get_codecs(), **kwargs):
     if not mod:
         if 'default' in kwargs:
             return kwargs['default']
-        raise IOError("file %s not found in search path %s" %(name, str(search_path)))
+        raise IOError("file {} not found in search path {}".format(name, str(search_path)))
 
     (codec, datafile) = mod[0]
     return codec().load(open(datafile))

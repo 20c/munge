@@ -1,7 +1,3 @@
-
-from builtins import str
-from builtins import object
-
 import collections
 import filecmp
 import imp
@@ -9,8 +5,6 @@ import os
 import pytest
 import sys
 
-#from munge.codec.yaml import Yaml
-#import munge.codec
 import munge
 import munge.codec.all
 

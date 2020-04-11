@@ -1,6 +1,3 @@
-from builtins import str
-from builtins import object
-
 import collections
 import copy
 import filecmp

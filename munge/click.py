@@ -1,9 +1,3 @@
-
-
-
-from builtins import object
-
-
 import click
 import os
 import logging
