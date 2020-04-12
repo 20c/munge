@@ -1,7 +1,6 @@
 import collections
 import copy
 import filecmp
-import imp
 import os
 import pytest
 import sys

@@ -7,14 +7,14 @@ def read_file(name):
 
 
 LONG_DESCRIPTION = read_file("README.md")
-version = open("facsimile/VERSION").readline().strip()
-requirements = open("facsimile/requirements.txt").read().split("\n")
-test_requirements = open("facsimile/requirements-test.txt").read().split("\n")
+VERSION = read_file("Ctl/VERSION")
+REQUIREMENTS = read_file("Ctl/requirements.txt").split("\n")
+TEST_REQUIREMENTS = read_file("Ctl/requirements-test.txt").split("\n")
 
 
 setup(
     name="munge",
-    version=version,
+    version=VERSION,
     author="20C",
     author_email="code@20c.com",
     description="data manipulation client / library",
@@ -29,8 +29,8 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     packages=find_packages(),
-    install_requires=requirements,
-    test_requires=test_requirements,
+    install_requires=REQUIREMENTS,
+    test_requires=TEST_REQUIREMENTS,
     entry_points={"console_scripts": ["munge=munge.cli:main",]},
     zip_safe=False,
 )
