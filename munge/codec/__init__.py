@@ -1,8 +1,4 @@
-from builtins import str
-from past.builtins import basestring
-
 import os
-import imp
 
 __all__ = ['django', 'mysql', 'json', 'yaml']
 __codecs = {}
@@ -39,10 +35,8 @@ def find_datafile(name, search_path=('.'), codecs=get_codecs()):
     """
     rv = []
 
-    if isinstance(search_path, basestring):
+    if isinstance(search_path, str):
         search_path = (search_path,)
-
-    #print "search path ", str(search_path)
 
     ext = os.path.splitext(name)[1][1:]
 
@@ -74,7 +68,7 @@ def load_datafile(name, search_path=('.'), codecs=get_codecs(), **kwargs):
     if not mod:
         if 'default' in kwargs:
             return kwargs['default']
-        raise IOError("file %s not found in search path %s" %(name, str(search_path)))
+        raise IOError("file {} not found in search path {}".format(name, str(search_path)))
 
     (codec, datafile) = mod[0]
     return codec().load(open(datafile))

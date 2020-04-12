@@ -1,7 +1,11 @@
+*.py[cod]
+*.egg
 *.egg-info
-*.pyc
+*.log
 .cache/
-.coverage
+.coverage*
 .pytest_cache/
+.tox
 coverage.xml
 dist/
+venv/

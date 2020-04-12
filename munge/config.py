@@ -1,7 +1,3 @@
-from future import standard_library
-standard_library.install_aliases()
-from past.builtins import basestring
-
 from collections import namedtuple
 import collections
 import copy
@@ -151,7 +147,7 @@ class Config(collections.MutableMapping):
         will return after the first successful read
         other args will be passed direction to read()
         """
-        if isinstance(config_dir, basestring):
+        if isinstance(config_dir, str):
             config_dir = (config_dir,)
 
         for cdir in config_dir:
