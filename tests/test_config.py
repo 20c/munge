@@ -12,77 +12,69 @@ from munge import config
 
 
 test_dir = os.path.relpath(os.path.dirname(__file__))
-data_dir = os.path.join(test_dir, 'data')
-conf0_dir = os.path.join(data_dir, 'conf0')
-extra_schemes = {
-    'tyam': {
-        'type': 'yaml',
-        'cls': munge.get_codec('yaml')
-    }
-}
+data_dir = os.path.join(test_dir, "data")
+conf0_dir = os.path.join(data_dir, "conf0")
+extra_schemes = {"tyam": {"type": "yaml", "cls": munge.get_codec("yaml")}}
 
 
 def test_parse_url():
-    django = munge.get_codec('django')
-    mysql = munge.get_codec('mysql')
-    json = munge.get_codec('json')
-    yaml = munge.get_codec('yaml')
+    django = munge.get_codec("django")
+    mysql = munge.get_codec("mysql")
+    json = munge.get_codec("json")
+    yaml = munge.get_codec("yaml")
 
     # fail on empty
     with pytest.raises(ValueError):
-        config.parse_url('')
+        config.parse_url("")
 
-    conf = config.parse_url('yaml:test')
-    conf = config.parse_url('yaml:test')
+    conf = config.parse_url("yaml:test")
+    conf = config.parse_url("yaml:test")
     assert yaml == conf.cls
-    assert 'test' == conf.url.path
+    assert "test" == conf.url.path
 
-    conf = config.parse_url('test.yaml')
+    conf = config.parse_url("test.yaml")
     assert yaml == conf.cls
-    assert 'test.yaml' == conf.url.path
+    assert "test.yaml" == conf.url.path
 
-    conf = config.parse_url('tyam:test', extra_schemes)
+    conf = config.parse_url("tyam:test", extra_schemes)
     assert yaml == conf.cls
-    assert 'test' == conf.url.path
+    assert "test" == conf.url.path
 
-    conf = config.parse_url('django:///home/user/project/settings_dir.settings?app_name/model')
+    conf = config.parse_url(
+        "django:///home/user/project/settings_dir.settings?app_name/model"
+    )
     assert django == conf.cls
-    assert '/home/user/project/settings_dir.settings' == conf.url.path
-    assert 'app_name/model' == conf.url.query
+    assert "/home/user/project/settings_dir.settings" == conf.url.path
+    assert "app_name/model" == conf.url.query
 
-    conf = config.parse_url('json:http://example.com/test.txt')
+    conf = config.parse_url("json:http://example.com/test.txt")
     assert json == conf.cls
-    assert 'http://example.com/test.txt' == conf.url.path
-#    assert 'app_name/model' == conf.url.query
+    assert "http://example.com/test.txt" == conf.url.path
+    #    assert 'app_name/model' == conf.url.query
 
     with pytest.raises(ValueError):
-        config.parse_url('nonexistant:test', extra_schemes)
+        config.parse_url("nonexistant:test", extra_schemes)
 
-default_config = {
-    'addrbook': {
-    }
-}
+
+default_config = {"addrbook": {}}
 
 conf0_data = {
-    'addrbook': {
-        'site0': {
-            'url': 'https://example.com/data.json',
-            'password': 'secr3t',
-            'user': 'user',
-            'timeout': 60
+    "addrbook": {
+        "site0": {
+            "url": "https://example.com/data.json",
+            "password": "secr3t",
+            "user": "user",
+            "timeout": 60,
         }
     }
 }
 
 
 class DefaultConfig(munge.Config):
-    defaults={
-        'config': default_config,
-        'config_dir': '~/.mungeX',
-        'codec':  'yaml'
-    }
+    defaults = {"config": default_config, "config_dir": "~/.mungeX", "codec": "yaml"}
+
     class Defaults(object):
-        config=default_config
+        config = default_config
 
 
 def mk_base_conf():
@@ -104,16 +96,20 @@ def mk_base_conf0():
     conf.read(conf0_dir)
     return conf
 
+
 def mk_base_conf0_init():
     return munge.config.Config(read=conf0_dir, **DefaultConfig.defaults)
 
+
 def mk_base_conf0_init_data():
     return munge.config.Config(data=conf0_data, **DefaultConfig.defaults)
+
 
 def mk_derived_conf0():
     conf = DefaultConfig()
     conf.read(conf0_dir)
     return conf
+
 
 conf0_obj_ctors = (
     mk_base_conf0,
@@ -122,13 +118,16 @@ conf0_obj_ctors = (
     mk_derived_conf0,
 )
 
+
 @pytest.fixture(scope="module", params=conf_obj_ctors)
 def conf(request):
     return request.param()
 
+
 @pytest.fixture(scope="module", params=conf0_obj_ctors)
 def conf0(request):
     return request.param()
+
 
 def test_derived_config_obj(conf):
     assert default_config == conf.default()
@@ -138,7 +137,7 @@ def test_derived_config_obj(conf):
 def test_config_obj(conf):
     assert default_config == conf.default()
     assert default_config == conf.data
-    conf.data['foo'] = 42
+    conf.data["foo"] = 42
     assert default_config != conf.data
     conf.clear()
     assert default_config == conf.data
@@ -150,7 +149,7 @@ def test_base_config_read():
     assert cfg._base_defaults == cfg._defaults
 
     with pytest.raises(IOError):
-        cfg.read('nonexistant')
+        cfg.read("nonexistant")
 
     # read with no config_dir and no default
     with pytest.raises(KeyError) as e:
@@ -161,14 +160,14 @@ def test_base_config_read():
     assert conf0_data == cfg.read(conf0_dir).data
 
     # config_dir from arg, name set to nome
-    cfg._defaults['config_name'] = None
+    cfg._defaults["config_name"] = None
     with pytest.raises(KeyError) as e:
         cfg.read(conf0_dir)
     assert "'config_name not set'" == str(e.value)
 
     # config_dir from defaults
     cfg = munge.Config()
-    cfg._defaults['config_dir'] = conf0_dir
+    cfg._defaults["config_dir"] = conf0_dir
     assert conf0_data == cfg.read().data
 
     # defaults is copy
@@ -179,7 +178,7 @@ def test_base_config_read():
     assert conf0_data == cfg.data
 
     with pytest.raises(IOError):
-        cfg = munge.Config(read='nonexistant')
+        cfg = munge.Config(read="nonexistant")
 
     with pytest.raises(IOError):
         cfg.read(os.getcwd())
@@ -191,8 +190,8 @@ def test_config_copy():
     assert cfg == cp
     assert cfg.meta == cp.meta
 
-    cp.data['NEW'] = 'KEY'
-    assert 'NEW' not in cfg.data
+    cp.data["NEW"] = "KEY"
+    assert "NEW" not in cfg.data
 
 
 def test_config_defaults():
@@ -207,7 +206,7 @@ def test_config_defaults():
 def test_base_config_clear():
     cfg = munge.Config(read=conf0_dir)
     assert conf0_data == cfg.data
-    assert conf0_dir == cfg.meta['config_dir']
+    assert conf0_dir == cfg.meta["config_dir"]
 
     cfg.clear()
     assert {} == cfg.meta
@@ -216,7 +215,7 @@ def test_base_config_clear():
 def test_config_clear(conf):
     assert default_config == conf.default()
     assert default_config == conf.data
-    conf.data['foo'] = 42
+    conf.data["foo"] = 42
     assert default_config != conf.data
     assert not conf.meta
     conf.clear()
@@ -224,16 +223,16 @@ def test_config_clear(conf):
 
 
 def test_base_config_ctor_try_read():
-    cfg = munge.Config(try_read='nonexistant')
+    cfg = munge.Config(try_read="nonexistant")
     assert {} == cfg.meta
 
 
 def test_base_config_ctor_try_read2():
     cfg = munge.Config()
-    cfg.try_read(['nonexistant', 'nonexistant2'])
+    cfg.try_read(["nonexistant", "nonexistant2"])
     assert {} == cfg.meta
 
-    cfg.try_read(['nonexistant', 'nonexistant2', conf0_dir])
+    cfg.try_read(["nonexistant", "nonexistant2", conf0_dir])
     assert conf0_data == cfg.data
     assert cfg.meta
 
@@ -247,8 +246,8 @@ def test_base_config_mapping():
     assert len(data) == len(cfg)
 
     # test __del__
-    del data['addrbook']
-    del cfg['addrbook']
+    del data["addrbook"]
+    del cfg["addrbook"]
     assert data == cfg.data
 
 
@@ -257,27 +256,29 @@ def test_config_write(conf, tmpdir):
         type(conf)().write()
 
     cdir = tmpdir.mkdir(type(conf).__name__)
-    conf.write(str(cdir), 'yaml')
+    conf.write(str(cdir), "yaml")
 
     # create an exact copy
     kwargs = conf._defaults.copy()
-    kwargs['read'] = str(cdir)
+    kwargs["read"] = str(cdir)
     conf2 = type(conf)(**kwargs)
 
     assert conf == conf2
     assert conf._defaults == conf2._defaults
     assert conf.data == conf2.data
 
-#    conf = type(conf)(read=str(cdir))
+    #    conf = type(conf)(read=str(cdir))
     shutil.rmtree(str(cdir))
     conf2.write()
     assert conf == conf2
     assert conf._defaults == conf2._defaults
     assert conf.data == conf2.data
 
+
 def test_conf0(conf0):
     assert conf0_data == conf0.data
 
-    assert conf0_data['addrbook']['site0']['url'] == conf0.get_nested('addrbook', 'site0', 'url')
-    assert None == conf0.get_nested('addrbook', 'site1', 'url')
-
+    assert conf0_data["addrbook"]["site0"]["url"] == conf0.get_nested(
+        "addrbook", "site0", "url"
+    )
+    assert None == conf0.get_nested("addrbook", "site1", "url")

@@ -1,21 +1,17 @@
-
-
-
 from munge.base import CodecBase
 
 try:
     pass
-    #from django.conf import settings
+    # from django.conf import settings
 
 except ImportError as exc:
     pass
 
 
-
 class Django(CodecBase):
 
-    extensions=['django']
-    __kwargs={}
+    extensions = ["django"]
+    __kwargs = {}
 
     def load(self, fobj):
         raise NotImplementedError()
@@ -28,14 +24,3 @@ class Django(CodecBase):
 
     def dumps(self, data):
         raise NotImplementedError()
-
-
-# config:
-
-#tag:
-#    type: json
-#    user: balh
-#    pass:
-
-# rc
-# .munge/config.<ext>

@@ -1,4 +1,3 @@
-
 import collections
 from copy import deepcopy
 
@@ -11,8 +10,8 @@ def recursive_update(a, b, **kwargs):
         copy: deepcopy instead of reference (default False)
         merge_lists: merge lists as well (default True)
     """
-    copy = kwargs.get('copy', False)
-    merge_lists = kwargs.get('merge_lists', True)
+    copy = kwargs.get("copy", False)
+    merge_lists = kwargs.get("merge_lists", True)
 
     for k, v in list(b.items()):
         if isinstance(v, collections.Mapping):
@@ -35,4 +34,3 @@ def recursive_update(a, b, **kwargs):
             a[k] = v
 
     return a
-

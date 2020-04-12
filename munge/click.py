@@ -8,39 +8,68 @@ def expand_env_var(path):
     loops through a search path list, expands anything starting with $
     """
 
+
 class Context(object):
     # TODO replace with full logger config
-    log_format = '%(message)s'
-    log_format_debug = '%(name)s %(message)s %(filename)s:%(lineno)d'
-    log_format_file = '%(asctime)s %(levelname)s %(message)s'
+    log_format = "%(message)s"
+    log_format_debug = "%(name)s %(message)s %(filename)s:%(lineno)d"
+    log_format_file = "%(asctime)s %(levelname)s %(message)s"
 
     @classmethod
     def search_path(cls):
-        return ['$%s_HOME' % cls.app_name.upper(),
-                os.path.join('.', '.' + cls.app_name),
-                os.path.expanduser(os.path.join('~', '.' + cls.app_name)),
-                click.get_app_dir(cls.app_name)]
+        return [
+            "$%s_HOME" % cls.app_name.upper(),
+            os.path.join(".", "." + cls.app_name),
+            os.path.expanduser(os.path.join("~", "." + cls.app_name)),
+            click.get_app_dir(cls.app_name),
+        ]
 
     @classmethod
     def option_list(cls):
         return [
-            dict(name='--debug', help='enable extra debug output', is_flag=True, default=None),
-            dict(name='--home', help='specify the home directory, by default will check in order: ' + ', '.join(cls.search_path()), default=None),
-            dict(name='--verbose', help='enable more verbose output', is_flag=True, default=None),
-            dict(name='--quiet', help='no output at all', is_flag=True, default=None),
-            ]
+            dict(
+                name="--debug",
+                help="enable extra debug output",
+                is_flag=True,
+                default=None,
+            ),
+            dict(
+                name="--home",
+                help="specify the home directory, by default will check in order: "
+                + ", ".join(cls.search_path()),
+                default=None,
+            ),
+            dict(
+                name="--verbose",
+                help="enable more verbose output",
+                is_flag=True,
+                default=None,
+            ),
+            dict(name="--quiet", help="no output at all", is_flag=True, default=None),
+        ]
 
     @classmethod
     def options(cls, f):
-        f = click.option('--debug', help='enable extra debug output', is_flag=True, default=None)(f)
-        f = click.option('--home', help='specify the home directory, by default will check in order: ' + ', '.join(cls.search_path()), default=None)(f)
-        f = click.option('--verbose', help='enable more verbose output', is_flag=True, default=None)(f)
-        f = click.option('--quiet', help='no output at all', is_flag=True, default=None)(f)
+        f = click.option(
+            "--debug", help="enable extra debug output", is_flag=True, default=None
+        )(f)
+        f = click.option(
+            "--home",
+            help="specify the home directory, by default will check in order: "
+            + ", ".join(cls.search_path()),
+            default=None,
+        )(f)
+        f = click.option(
+            "--verbose", help="enable more verbose output", is_flag=True, default=None
+        )(f)
+        f = click.option(
+            "--quiet", help="no output at all", is_flag=True, default=None
+        )(f)
         return f
 
     @classmethod
     def pop_options(cls, kwargs):
-        keys = ('debug', 'home', 'verbose', 'quiet')
+        keys = ("debug", "home", "verbose", "quiet")
         return {k: kwargs.pop(k, None) for k in keys}
 
     @classmethod
@@ -56,7 +85,7 @@ class Context(object):
 
     @property
     def log(self):
-        if not getattr(self, '_logger', None):
+        if not getattr(self, "_logger", None):
             self._logger = logging.getLogger(self.app_name)
         return self._logger
 
@@ -73,26 +102,26 @@ class Context(object):
     def update_options(self, kwargs):
         opt = self.__class__.get_options(kwargs)
 
-        if opt.get('debug', None) is not None:
-            self.debug = opt['debug']
+        if opt.get("debug", None) is not None:
+            self.debug = opt["debug"]
 
-        if opt.get('verbose', None) is not None:
-            self.verbose = opt['verbose']
+        if opt.get("verbose", None) is not None:
+            self.verbose = opt["verbose"]
 
-        if opt.get('quiet', None) is not None:
-            self.quiet = opt['quiet']
+        if opt.get("quiet", None) is not None:
+            self.quiet = opt["quiet"]
 
         # TODO - probably should warn or error if passing multiple home values in?
-        if opt.get('home', None) is not None:
+        if opt.get("home", None) is not None:
             # if home is redefined, nuke config and load a new one
-            self.home = opt['home']
+            self.home = opt["home"]
             self.config = self.config_class(read=self.home)
 
         # if no config and home wasn't defined, check search path
         elif not self.config:
             search_path = []
             for path in self.__class__.search_path():
-                if path.startswith('$'):
+                if path.startswith("$"):
                     if path[1:] not in os.environ:
                         continue
                     search_path.append(os.environ[path[1:]])
@@ -101,7 +130,7 @@ class Context(object):
 
             self.config = self.config_class(try_read=search_path)
             if self.config.meta:
-                self.home = self.config.meta['config_dir']
+                self.home = self.config.meta["config_dir"]
 
         self.init()
 
@@ -123,7 +152,7 @@ class Context(object):
         else:
             logging.getLogger().addHandler(logging.NullHandler())
 
+
 # TODO add config by dict
 #        for handler in logging.getLogger().handlers:
 #            handler.addFilter(logging.Filter(self.app_name))
-

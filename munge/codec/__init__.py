@@ -1,6 +1,6 @@
 import os
 
-__all__ = ['django', 'mysql', 'json', 'yaml']
+__all__ = ["django", "mysql", "json", "yaml"]
 __codecs = {}
 
 
@@ -15,18 +15,22 @@ def add_codec(exts, cls):
 
     __codecs[exts] = cls
 
+
 def get_codecs():
     return __codecs
 
+
 def list_codecs():
     return [ext[0] for ext in list(get_codecs().keys())]
+
 
 def get_codec(tag, codecs=get_codecs()):
     for exts, cls in list(codecs.items()):
         if tag in exts:
             return cls
 
-def find_datafile(name, search_path=('.'), codecs=get_codecs()):
+
+def find_datafile(name, search_path=("."), codecs=get_codecs()):
     """
     find all matching data files in search_path
     search_path: path of directories to load from
@@ -57,7 +61,8 @@ def find_datafile(name, search_path=('.'), codecs=get_codecs()):
 
     return rv
 
-def load_datafile(name, search_path=('.'), codecs=get_codecs(), **kwargs):
+
+def load_datafile(name, search_path=("."), codecs=get_codecs(), **kwargs):
     """
     find datafile and load them from codec
     TODO only does the first one
@@ -66,10 +71,11 @@ def load_datafile(name, search_path=('.'), codecs=get_codecs(), **kwargs):
     """
     mod = find_datafile(name, search_path, codecs)
     if not mod:
-        if 'default' in kwargs:
-            return kwargs['default']
-        raise IOError("file {} not found in search path {}".format(name, str(search_path)))
+        if "default" in kwargs:
+            return kwargs["default"]
+        raise IOError(
+            "file {} not found in search path {}".format(name, str(search_path))
+        )
 
     (codec, datafile) = mod[0]
     return codec().load(open(datafile))
-

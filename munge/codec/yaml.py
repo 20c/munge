@@ -1,6 +1,3 @@
-
-
-
 from munge.base import CodecBase
 
 try:
@@ -11,7 +8,7 @@ except:
 
 
 class Yaml(CodecBase):
-    extensions=['yaml', 'yml']
+    extensions = ["yaml", "yml"]
 
     def set_type(self, name, typ):
         pass
@@ -27,4 +24,3 @@ class Yaml(CodecBase):
 
     def dumps(self, data):
         return yaml.safe_dump(data, default_flow_style=False)
-
