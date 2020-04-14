@@ -1,0 +1,40 @@
+Unreleased:
+  added:
+  - tests for python 3.7 and 3.8
+  changed:
+  - don't reuse class attribute for defaults
+  deprecated: []
+  fixed: []
+  removed:
+  - python 2.7 support
+  - tests for python 3.7 and 3.8
+0.5.0:
+  added:
+  - option_list to Context
+  - log to Context
+  - config search path includes ~/.$APP_NAME
+  changed:
+  - empty meta returns empty dict instead of None
+0.6.0:
+  changed:
+  - decrease PyYAML requirement to >=3.10
+  fixed:
+  - log on click Context referencing non-existant `cls` property
+0.4.0:
+  added:
+  - py3 support
+  fixed:
+  - set click.Context.home when config is found
+0.3.0:
+  fixed:
+  - version bump for proper semantic versioning
+0.2.1:
+  added:
+  - CHANGELOG!
+  - allow changing config_name
+  - try_read
+  - config.meta
+  - config.copy()
+  - click.Context
+  removed:
+  - unused get_type, Endpoint
