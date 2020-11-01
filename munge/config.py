@@ -11,7 +11,7 @@ import munge.util
 # this wouldn't work with tabular data
 # need metaclass to allow users to set info once on class
 # TODO rename to BaseConfig, set standard setup for Config?
-class Config(collections.MutableMapping):
+class Config(collections.abc.MutableMapping):
     """
     class for storing and manipulating data for config files
     """

@@ -14,8 +14,8 @@ def recursive_update(a, b, **kwargs):
     merge_lists = kwargs.get("merge_lists", True)
 
     for k, v in list(b.items()):
-        if isinstance(v, collections.Mapping):
-            if isinstance(a.get(k, None), collections.Mapping):
+        if isinstance(v, collections.abc.Mapping):
+            if isinstance(a.get(k, None), collections.abc.Mapping):
                 recursive_update(a[k], v, **kwargs)
                 continue
 
