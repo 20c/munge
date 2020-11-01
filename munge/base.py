@@ -10,7 +10,7 @@ from munge import codec
 class Meta(type):
     def __init__(cls, name, bases, attrs):
         if name == "CodecBase":
-            super(Meta, cls).__init__(name, bases, attrs)
+            super().__init__(name, bases, attrs)
             return
 
         if not hasattr(cls, "extensions"):
@@ -18,7 +18,7 @@ class Meta(type):
                 "class %s failed import, must have 'extensions' defined" % cls.__name__
             )
 
-        super(Meta, cls).__init__(name, bases, attrs)
+        super().__init__(name, bases, attrs)
         codec.add_codec(cls.extensions, cls)
 
 
@@ -50,7 +50,7 @@ class CodecBase(metaclass=Meta):
         if not res.scheme:
             if not res.path or res.path == "-":
                 if not stdio:
-                    raise IOError("unable to open '%s'" % (url,))
+                    raise OSError(f"unable to open '{url}'")
 
                 if "w" in mode:
                     return sys.stdout
@@ -64,7 +64,7 @@ class CodecBase(metaclass=Meta):
             return req.raw
             # return urllib2.urlopen(res.geturl())
 
-        raise IOError("unable to open '%s'" % (url,))
+        raise OSError(f"unable to open '{url}'")
 
     def loadu(self, url, **kwargs):
         """

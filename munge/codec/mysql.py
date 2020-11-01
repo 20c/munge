@@ -10,7 +10,7 @@ except:
 from urllib.parse import urlsplit
 
 
-class MysqlEndpoint(object):
+class MysqlEndpoint:
     def __init__(self, cxn, database, table):
         self.database = database
         self.table = table
@@ -49,7 +49,7 @@ class Mysql(CodecBase):
     # native mysql connection
     def load(self, fobj):
         cursor = fobj.cxn.cursor()
-        cursor.execute("select * from %s.%s" % (fobj.database, fobj.table))
+        cursor.execute(f"select * from {fobj.database}.{fobj.table}")
         return cursor.fetchall()
 
     def loads(self, instr):

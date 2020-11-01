@@ -9,7 +9,7 @@ def expand_env_var(path):
     """
 
 
-class Context(object):
+class Context:
     # TODO replace with full logger config
     log_format = "%(message)s"
     log_format_debug = "%(name)s %(message)s %(filename)s:%(lineno)d"

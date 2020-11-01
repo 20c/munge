@@ -126,12 +126,12 @@ class Config(collections.abc.MutableMapping):
 
         conf_path = os.path.expanduser(config_dir)
         if not os.path.exists(conf_path):
-            raise IOError("config dir not found at %s" % (conf_path,))
+            raise OSError(f"config dir not found at {conf_path}")
 
         config = munge.load_datafile(config_name, conf_path, default=None)
 
         if not config:
-            raise IOError("config file not found in %s" % (conf_path,))
+            raise OSError(f"config file not found in {conf_path}")
 
         if clear:
             self.clear()
@@ -155,7 +155,7 @@ class Config(collections.abc.MutableMapping):
                 self.read(cdir, **kwargs)
                 return cdir
 
-            except IOError as e:
+            except OSError as e:
                 pass
 
     def write(self, config_dir=None, config_name=None, codec=None):
@@ -166,7 +166,7 @@ class Config(collections.abc.MutableMapping):
         if not config_dir:
             config_dir = self._meta_config_dir
             if not config_dir:
-                raise IOError("config_dir not set")
+                raise OSError("config_dir not set")
 
         # get name of config file
         if not config_name:
