@@ -16,7 +16,7 @@ for tags, cls in list(munge.get_codecs().items()):
         test_codecs.append(cls)
 
 
-class DataSet0(object):
+class DataSet0:
     name = "set0"
     filename = "data/" + name
 
@@ -26,7 +26,7 @@ class DataSet0(object):
 data = (DataSet0,)
 
 
-class DataTab0(object):
+class DataTab0:
     name = "tab0"
     filename = "data/" + name
 
@@ -39,7 +39,7 @@ data = (
 )
 
 
-class Codec(object):
+class Codec:
     def __init__(self, cls):
         self.cls = cls
         # if not os.path.exists(
@@ -47,7 +47,7 @@ class Codec(object):
     def find_file(self, name):
         prefix = os.path.join(this_dir, name)
         for ext in self.cls.extensions:
-            fq_name = "%s.%s" % (prefix, ext)
+            fq_name = f"{prefix}.{ext}"
             print("checking", fq_name)
             if os.path.exists(fq_name):
                 return fq_name
@@ -183,7 +183,7 @@ def test_load_datafile(codec, dataset):
     # test hardset extension
     assert obj.extensions
     for ext in obj.extensions:
-        fq_path = "%s.%s" % (dataset.filename, ext)
+        fq_path = f"{dataset.filename}.{ext}"
         data = munge.load_datafile(fq_path, this_dir, default=None)
         if data:
             break

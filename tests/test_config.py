@@ -72,7 +72,7 @@ conf0_data = {
 class DefaultConfig(munge.Config):
     defaults = {"config": default_config, "config_dir": "~/.mungeX", "codec": "yaml"}
 
-    class Defaults(object):
+    class Defaults:
         config = default_config
 
 

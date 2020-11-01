@@ -9,7 +9,7 @@ def add_codec(exts, cls):
         exts = tuple(exts)
 
     # check for dupe extensions
-    dupe_exts = set(ext for k in list(__codecs.keys()) for ext in k).intersection(exts)
+    dupe_exts = {ext for k in list(__codecs.keys()) for ext in k}.intersection(exts)
     if dupe_exts:
         raise ValueError("duplicate extension %s" % str(dupe_exts))
 
@@ -53,7 +53,7 @@ def find_datafile(name, search_path=("."), codecs=get_codecs()):
 
     for exts, obj in list(codecs.items()):
         for ext in exts:
-            filename = "%s.%s" % (name, ext)
+            filename = f"{name}.{ext}"
             for each in search_path:
                 fq_filename = os.path.join(each, filename)
                 if os.path.exists(fq_filename):
@@ -73,7 +73,7 @@ def load_datafile(name, search_path=("."), codecs=get_codecs(), **kwargs):
     if not mod:
         if "default" in kwargs:
             return kwargs["default"]
-        raise IOError(
+        raise OSError(
             "file {} not found in search path {}".format(name, str(search_path))
         )
 

@@ -4,6 +4,15 @@
 ## Unreleased
 
 
+## Unreleased
+### Added
+- tests for python 3.8 and 3.9
+### Changed
+- use collections.abc
+### Removed
+- python 3.5 support
+
+
 ## 1.0.0
 ### Added
 - tests for python 3.7 and 3.8
