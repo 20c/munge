@@ -4,9 +4,9 @@
 ## Unreleased
 
 
-## Unreleased
+## 1.1.0
 ### Added
-- tests for python 3.8 and 3.9
+- tests for python 3.9
 ### Changed
 - use collections.abc
 ### Removed

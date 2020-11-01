@@ -36,6 +36,13 @@
   removed:
   - python 2.7 support
   - tests for python 3.7 and 3.8
+1.1.0:
+  added:
+  - tests for python 3.9
+  changed:
+  - use collections.abc
+  removed:
+  - python 3.5 support
 Unreleased:
   added: []
   changed: []
