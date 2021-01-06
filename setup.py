@@ -33,5 +33,7 @@ setup(
     install_requires=REQUIREMENTS,
     test_requires=TEST_REQUIREMENTS,
     entry_points={"console_scripts": ["munge=munge.cli:main",]},
+    url='https://github.com/20c/munge',
+    download_url=f'https://github.com/20c/munge/{VERSION}',
     zip_safe=False,
 )

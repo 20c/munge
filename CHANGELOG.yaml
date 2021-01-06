@@ -44,7 +44,8 @@
   removed:
   - python 3.5 support
 Unreleased:
-  added: []
+  added:
+  - "download and repo urls to setup.py (#10)"
   changed: []
   deprecated: []
   fixed: []

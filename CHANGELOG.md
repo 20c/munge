@@ -2,6 +2,8 @@
 
 
 ## Unreleased
+### Added
+- download and repo urls to setup.py (#10)
 
 
 ## 1.1.0
