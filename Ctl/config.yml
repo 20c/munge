@@ -4,11 +4,6 @@ ctl:
       permission: "r"
 
   plugins:
-    - name: this_repo
-      type: git
-      config:
-        repo_url: git@github.com:20c/rdap.git
-
     - name: changelog
       type: changelog
 
@@ -23,5 +18,3 @@ ctl:
       config:
         branch_dev: master
         branch_release: master
-        repositories:
-          - this_repo
