@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "munge"
+version = "1.1.0"
+description = "data manipulation library and client"
+authors = ["20C <code@20c.com>"]
+license = "Apache-2.0"
+
+classifiers = [
+  "Topic :: Software Development", 
+  "License :: OSI Approved :: Apache Software License", 
+  "Programming Language :: Python :: 3.6", 
+  "Programming Language :: Python :: 3.7", 
+  "Programming Language :: Python :: 3.8", 
+  "Programming Language :: Python :: 3.9",
+]
+
+packages = [
+    { include = "munge", from = "src" },
+]
+
+[tool.poetry.scripts]
+munge = "munge.cli:main"
+
+
+[tool.poetry.dependencies]
+python = "^3.6"
+requests = "^2.6"
+PyYAML = "^5.4.1"
+click = "^8.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-cov = "*"
+codecov = "^2.1.11"
+coverage = "^5.5"
+tox = "^3.23.1"
+
+# linting
+bandit = "^1.6.2"
+black = "^20.8b1"
+isort = "^5.7.0"
+flake8 = "^3.8.4"
+pre-commit = "^2"
+mypy = "^0.812"
+pyupgrade = "^2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3

@@ -1,6 +1,6 @@
-from munge.base import CodecBase
-
 import json
+
+from munge.base import CodecBase
 
 
 class Json(CodecBase):

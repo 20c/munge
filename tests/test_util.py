@@ -1,6 +1,8 @@
 import copy
-import munge.util
+
 import pytest
+
+import munge.util
 
 
 def test_recursive_update():

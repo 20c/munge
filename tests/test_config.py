@@ -2,13 +2,13 @@ import collections
 import copy
 import filecmp
 import os
-import pytest
-import sys
 import shutil
+import sys
+
+import pytest
 
 import munge
 from munge import config
-
 
 test_dir = os.path.relpath(os.path.dirname(__file__))
 data_dir = os.path.join(test_dir, "data")

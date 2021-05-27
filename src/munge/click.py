@@ -1,6 +1,7 @@
-import click
-import os
 import logging
+import os
+
+import click
 
 
 def expand_env_var(path):

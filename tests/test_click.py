@@ -1,9 +1,9 @@
 import os
+
 import pytest
 
 import munge
 import munge.click
-
 
 test_dir = os.path.relpath(os.path.dirname(__file__))
 data_dir = os.path.join(test_dir, "data")
