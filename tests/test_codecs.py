@@ -1,8 +1,9 @@
 import collections
 import filecmp
 import os
-import pytest
 import sys
+
+import pytest
 
 import munge
 import munge.codec.all

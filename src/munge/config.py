@@ -1,8 +1,8 @@
-from collections import namedtuple
 import collections
 import copy
-from urllib.parse import urlsplit
 import os
+from collections import namedtuple
+from urllib.parse import urlsplit
 
 import munge
 import munge.util

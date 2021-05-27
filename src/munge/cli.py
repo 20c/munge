@@ -1,8 +1,10 @@
-import click
 import sys
+
+import click
+
 import munge
-from munge import config
 import munge.click
+from munge import config
 
 
 class Context(munge.click.Context):

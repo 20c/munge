@@ -1,7 +1,10 @@
 import os
 import sys
+import urllib.error
+import urllib.parse
+import urllib.request
 from urllib.parse import urlsplit
-import urllib.request, urllib.error, urllib.parse
+
 import requests
 
 from munge import codec
