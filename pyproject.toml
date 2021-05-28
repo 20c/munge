@@ -27,7 +27,7 @@ python = "^3.6"
 requests = "^2.6"
 click = "^8.0.1"
 
-PyYAML = {version = "^3", optional = true}
+PyYAML = {version = "^5.1", optional = true}
 toml = "^0.10.2"
 tomlkit = "^0.7.2"
 

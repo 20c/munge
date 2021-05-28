@@ -1,3 +1,5 @@
+import collections
+import os
 import sys
 from urllib.parse import urlsplit
 
@@ -18,7 +20,6 @@ class Meta(type):
             )
 
         if not cls.supports_dict and not cls.supports_list:
-            print(getattr(cls, "supports_list"))
             raise NotImplementedError(
                 f"class {cls.__name__} failed import, must have either 'supports_dict' or 'supports_list' defined"
             )
@@ -42,7 +43,14 @@ class CodecBase(metaclass=Meta):
         return self.extensions[0]
 
     def set_type(self, name, typ):
-        raise NotImplementedError("missing set_type")
+        raise NotImplementedError("set_type has not been implemented")
+
+    def supports_data(self, data):
+        if isinstance(data, collections.abc.Mapping):
+            return self.supports_dict
+        # XXX iterable?
+        if isinstance(data, list):
+            return self.supports_list
 
     def open(self, url, mode="r", stdio=True):
         """

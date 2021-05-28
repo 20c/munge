@@ -13,7 +13,7 @@ data_dir = os.path.join(this_dir, "data")
 
 test_codecs = []
 for tags, cls in list(munge.get_codecs().items()):
-    if any(name in ("json", "yaml") for name in tags):
+    if any(name in ("json", "toml", "yaml") for name in tags):
         test_codecs.append(cls)
 
 
@@ -24,11 +24,8 @@ class Datadict0:
     expected = {"munge": {"str0": "str0", "list0": ["item0", "item1"], "int0": 42}}
 
 
-data = (Datadict0,)
-
-
-class Datadict0:
-    name = "dict0"
+class Datalist0:
+    name = "list0"
     filename = "data/" + name
 
     expected = [{"int0": 42, "str0": "str0"}, {"int0": 1337, "str0": "fish"}]
@@ -36,7 +33,7 @@ class Datadict0:
 
 data = (
     Datadict0,
-    Datadict0,
+    Datalist0,
 )
 
 
@@ -74,6 +71,7 @@ def codec(request):
 
 
 def test_codec_registry():
+    # XXX should get codecs take a type?
     assert munge.get_codecs()
 
 
@@ -82,6 +80,7 @@ def test_extesion(codec, dataset):
     assert obj.extensions[0] == obj.extension
 
 
+# XXX disabled why?
 def no_test_load_into(codec, dataset):
     src = codec.cls()
     src.set_type("dict", collections.OrderedDict)
@@ -93,6 +92,10 @@ def no_test_load_into(codec, dataset):
 
 def test_open(codec, dataset):
     src = codec.cls()
+    if not src.supports_data(dataset.expected):
+        return
+    # with open(codec.find_file(dataset.filename)) as :
+
     assert (
         open(codec.find_file(dataset.filename)).read()
         == src.open(codec.find_file(dataset.filename)).read()
@@ -109,11 +112,15 @@ def test_open(codec, dataset):
 
 def test_load(codec, dataset):
     src = codec.cls()
+    if not src.supports_data(dataset.expected):
+        return
     assert dataset.expected == src.load(open(codec.find_file(dataset.filename)))
 
 
 def test_loads(codec, dataset):
     src = codec.cls()
+    if not src.supports_data(dataset.expected):
+        return
     data = codec.open_file(dataset.filename)
     print(data)
     print(data.read())
@@ -122,11 +129,16 @@ def test_loads(codec, dataset):
 
 def test_loadu(codec, dataset):
     src = codec.cls()
+    if not src.supports_data(dataset.expected):
+        return
     assert dataset.expected == src.loadu(codec.find_file(dataset.filename))
 
 
 def test_dump(codec, dataset, tmpdir):
+    # XXX normalize
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
     dstfile = tmpdir.join("dump" + obj.extension)
     obj.dump(dataset.expected, dstfile.open("w"))
     assert dataset.expected == obj.load(dstfile.open())
@@ -135,6 +147,8 @@ def test_dump(codec, dataset, tmpdir):
 
 def test_dumps(codec, dataset, tmpdir):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
     dstfile = tmpdir.join("dump" + obj.extension)
     obj.dumpu(dataset.expected, str(dstfile))
     assert dataset.expected == obj.load(dstfile.open())
@@ -142,12 +156,16 @@ def test_dumps(codec, dataset, tmpdir):
 
 def test_dumpu(codec, dataset, tmpdir):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
     dstfile = tmpdir.join("dump" + obj.extension)
     assert dataset.expected == obj.loads(obj.dumps(dataset.expected))
 
 
 def test_find_datafile(codec, dataset):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
 
     print(dataset.filename)
     print(data_dir)
@@ -170,7 +188,10 @@ def test_find_datafile(codec, dataset):
 
 def test_load_datafile(codec, dataset):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
 
+    # XXX move the nonexistant tests to their own function so they're not repeatedly called
     with pytest.raises(IOError):
         munge.load_datafile("nonexistant", data_dir)
 
