@@ -4,7 +4,6 @@ import click
 
 import munge
 import munge.click
-from munge import config
 
 
 class Context(munge.click.Context):
