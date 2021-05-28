@@ -45,7 +45,7 @@ def common_options(f):
     is_eager=True,
 )
 def main(**options):
-    conf = config.MungeConfig(try_read=options["config"])
+    conf = munge.config.MungeConfig(try_read=options["config"])
 
     inp = options["input"]
     outp = options["output"]
@@ -60,7 +60,7 @@ def main(**options):
     elif len(inp) != 1:
         raise NotImplementedError("multi input not yet supported")
 
-    src = config.parse_url(inp[0], conf.get("addrbook", []))
+    src = munge.config.parse_url(inp[0], conf.get("addrbook", []))
     data = src.cls().loadu(src.url.path)
 
     # use same input codec by defailt
@@ -68,5 +68,5 @@ def main(**options):
         dst = src
         dst.cls().dumpu(data, "-")
     else:
-        dst = config.parse_url(outp, conf.get("addrbook", {}))
+        dst = munge.config.parse_url(outp, conf.get("addrbook", {}))
         dst.cls().dumpu(data, dst.url.path)

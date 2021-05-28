@@ -1,7 +1,6 @@
 import collections
 import copy
 import os
-from collections import namedtuple
 from urllib.parse import urlsplit
 
 import munge
@@ -197,7 +196,7 @@ def find_cls(name, extra_schemes={}):
     return munge.get_codec(name)
 
 
-class MungeURL(namedtuple("MungeURL", "cls url")):
+class MungeURL(collections.namedtuple("MungeURL", "cls url")):
     pass
 
 
