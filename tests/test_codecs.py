@@ -71,7 +71,6 @@ def codec(request):
 
 
 def test_codec_registry():
-    # XXX should get codecs take a type?
     assert munge.get_codecs()
 
 
@@ -80,58 +79,58 @@ def test_extesion(codec, dataset):
     assert obj.extensions[0] == obj.extension
 
 
-# XXX disabled why?
+# Needs set_type fixing
 def no_test_load_into(codec, dataset):
-    src = codec.cls()
-    src.set_type("dict", collections.OrderedDict)
-    data = src.load(open(codec.find_file(dataset.filename)))
+    obj = codec.cls()
+    obj.set_type("dict", collections.OrderedDict)
+    data = obj.load(open(codec.find_file(dataset.filename)))
     assert dataset.expected == data
     assert collections.OrderedDict.__name__ == type(data).__name__
     assert isinstance(data, collections.OrderedDict)
 
 
 def test_open(codec, dataset):
-    src = codec.cls()
-    if not src.supports_data(dataset.expected):
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
         return
     # with open(codec.find_file(dataset.filename)) as :
 
     assert (
         open(codec.find_file(dataset.filename)).read()
-        == src.open(codec.find_file(dataset.filename)).read()
+        == obj.open(codec.find_file(dataset.filename)).read()
     )
 
     with pytest.raises(IOError):
-        src.open("noneexistant")
+        obj.open("noneexistant")
     with pytest.raises(IOError):
-        src.open("", stdio=False)
+        obj.open("", stdio=False)
 
-    assert sys.stdin == src.open("")
-    assert sys.stdin == src.open("-")
+    assert sys.stdin == obj.open("")
+    assert sys.stdin == obj.open("-")
 
 
 def test_load(codec, dataset):
-    src = codec.cls()
-    if not src.supports_data(dataset.expected):
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
         return
-    assert dataset.expected == src.load(open(codec.find_file(dataset.filename)))
+    assert dataset.expected == obj.load(open(codec.find_file(dataset.filename)))
 
 
 def test_loads(codec, dataset):
-    src = codec.cls()
-    if not src.supports_data(dataset.expected):
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
         return
     data = codec.open_file(dataset.filename)
     print(data)
     print(data.read())
-    assert dataset.expected == src.loads(codec.open_file(dataset.filename).read())
+    assert dataset.expected == obj.loads(codec.open_file(dataset.filename).read())
 
 
 def test_loadu(codec, dataset):
-    src = codec.cls()
-    if not src.supports_data(dataset.expected):
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
         return
-    assert dataset.expected == src.loadu(codec.find_file(dataset.filename))
+    assert dataset.expected == obj.loadu(codec.find_file(dataset.filename))
 
 
 def test_dump(codec, dataset, tmpdir):

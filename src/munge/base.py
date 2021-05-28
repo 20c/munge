@@ -48,7 +48,6 @@ class CodecBase(metaclass=Meta):
     def supports_data(self, data):
         if isinstance(data, collections.abc.Mapping):
             return self.supports_dict
-        # XXX iterable?
         if isinstance(data, list):
             return self.supports_list
 

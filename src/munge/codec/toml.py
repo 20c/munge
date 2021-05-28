@@ -21,9 +21,6 @@ class Toml(CodecBase):
         return toml.loads(input_string, **self.__kwargs)
 
     def dump(self, data, fobj, **kwargs):
-# XXX        data = dict(data=data)
-        print(data)
-        print(fobj)
         return toml.dump(data, fobj, **kwargs)
 
     def dumps(self, data):
