@@ -1,8 +1,4 @@
-import os
 import sys
-import urllib.error
-import urllib.parse
-import urllib.request
 from urllib.parse import urlsplit
 
 import requests

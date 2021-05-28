@@ -4,7 +4,7 @@ try:
     import MySQLdb
     import MySQLdb.cursors
 
-except:
+except ImportError:
     pass
 
 from urllib.parse import urlsplit
