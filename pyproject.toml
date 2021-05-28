@@ -25,8 +25,11 @@ munge = "munge.cli:main"
 [tool.poetry.dependencies]
 python = "^3.6"
 requests = "^2.6"
-PyYAML = "^5.4.1"
 click = "^8.0.1"
+
+PyYAML = {version = "^3", optional = true}
+toml = "^0.10.2"
+tomlkit = "^0.7.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
@@ -43,6 +46,9 @@ flake8 = "^3.8.4"
 pre-commit = "^2"
 mypy = "^0.812"
 pyupgrade = "^2"
+
+[tool.poetry.extras]
+yaml = ["PyYAML"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

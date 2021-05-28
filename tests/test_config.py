@@ -17,7 +17,7 @@ extra_schemes = {"tyam": {"type": "yaml", "cls": munge.get_codec("yaml")}}
 
 
 def test_parse_url():
-    django = munge.get_codec("django")
+    # django = munge.get_codec("django")
     mysql = munge.get_codec("mysql")
     json = munge.get_codec("json")
     yaml = munge.get_codec("yaml")
@@ -39,12 +39,12 @@ def test_parse_url():
     assert yaml == conf.cls
     assert "test" == conf.url.path
 
-    conf = config.parse_url(
-        "django:///home/user/project/settings_dir.settings?app_name/model"
-    )
-    assert django == conf.cls
-    assert "/home/user/project/settings_dir.settings" == conf.url.path
-    assert "app_name/model" == conf.url.query
+ #   conf = config.parse_url(
+ #       "django:///home/user/project/settings_dir.settings?app_name/model"
+ #   )
+ #   assert django == conf.cls
+ #   assert "/home/user/project/settings_dir.settings" == conf.url.path
+ #   assert "app_name/model" == conf.url.query
 
     conf = config.parse_url("json:http://example.com/test.txt")
     assert json == conf.cls

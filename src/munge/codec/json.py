@@ -4,6 +4,8 @@ from munge.base import CodecBase
 
 
 class Json(CodecBase):
+    supports_dict = True
+    supports_list = True
 
     extensions = ["json"]
     __kwargs = {}

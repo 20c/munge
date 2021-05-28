@@ -8,6 +8,8 @@ except ImportError:
 
 
 class Yaml(CodecBase):
+    supports_dict = True
+    supports_list = True
     extensions = ["yaml", "yml"]
 
     def set_type(self, name, typ):

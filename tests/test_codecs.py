@@ -17,26 +17,26 @@ for tags, cls in list(munge.get_codecs().items()):
         test_codecs.append(cls)
 
 
-class DataSet0:
-    name = "set0"
+class Datadict0:
+    name = "dict0"
     filename = "data/" + name
 
     expected = {"munge": {"str0": "str0", "list0": ["item0", "item1"], "int0": 42}}
 
 
-data = (DataSet0,)
+data = (Datadict0,)
 
 
-class DataTab0:
-    name = "tab0"
+class Datadict0:
+    name = "dict0"
     filename = "data/" + name
 
     expected = [{"int0": 42, "str0": "str0"}, {"int0": 1337, "str0": "fish"}]
 
 
 data = (
-    DataSet0,
-    DataTab0,
+    Datadict0,
+    Datadict0,
 )
 
 
@@ -151,7 +151,7 @@ def test_find_datafile(codec, dataset):
 
     print(dataset.filename)
     print(data_dir)
-    files = munge.find_datafile("set0", data_dir)
+    files = munge.find_datafile("dict0", data_dir)
     # should == number of codec tests
     assert files
 
@@ -192,7 +192,6 @@ def test_load_datafile(codec, dataset):
     assert data
 
     # test default search path '.'
-    # files = munge.find_datafile('set0', data_dir)
     files = munge.find_datafile(fq_path, this_dir)
     assert 1 == len(files)
     relpath = os.path.relpath(files[0][1])
