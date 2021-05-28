@@ -1,11 +1,11 @@
 from munge.base import CodecBase
 
 # FIXME - remove this file?
-#try:
+# try:
 #    pass
 #    # from django.conf import settings
 #
-#except ImportError as exc:
+# except ImportError as exc:
 #    pass
 
 
