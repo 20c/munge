@@ -45,7 +45,9 @@
   - python 3.5 support
 Unreleased:
   added:
-  - "download and repo urls to setup.py (#10)"
+  - download and repo urls to setup.py (#10)
+  - toml support
+  - extras
   changed: []
   deprecated: []
   fixed: []
