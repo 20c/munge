@@ -18,6 +18,7 @@ class MysqlEndpoint:
 
 
 class Mysql(CodecBase):
+    supports_list = True
 
     extensions = ["mysql"]
     __kwargs = {}

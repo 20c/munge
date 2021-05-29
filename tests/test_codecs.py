@@ -13,30 +13,27 @@ data_dir = os.path.join(this_dir, "data")
 
 test_codecs = []
 for tags, cls in list(munge.get_codecs().items()):
-    if any(name in ("json", "yaml") for name in tags):
+    if any(name in ("json", "toml", "yaml") for name in tags):
         test_codecs.append(cls)
 
 
-class DataSet0:
-    name = "set0"
+class Datadict0:
+    name = "dict0"
     filename = "data/" + name
 
     expected = {"munge": {"str0": "str0", "list0": ["item0", "item1"], "int0": 42}}
 
 
-data = (DataSet0,)
-
-
-class DataTab0:
-    name = "tab0"
+class Datalist0:
+    name = "list0"
     filename = "data/" + name
 
     expected = [{"int0": 42, "str0": "str0"}, {"int0": 1337, "str0": "fish"}]
 
 
 data = (
-    DataSet0,
-    DataTab0,
+    Datadict0,
+    Datalist0,
 )
 
 
@@ -82,51 +79,65 @@ def test_extesion(codec, dataset):
     assert obj.extensions[0] == obj.extension
 
 
+# Needs set_type fixing
 def no_test_load_into(codec, dataset):
-    src = codec.cls()
-    src.set_type("dict", collections.OrderedDict)
-    data = src.load(open(codec.find_file(dataset.filename)))
+    obj = codec.cls()
+    obj.set_type("dict", collections.OrderedDict)
+    data = obj.load(open(codec.find_file(dataset.filename)))
     assert dataset.expected == data
     assert collections.OrderedDict.__name__ == type(data).__name__
     assert isinstance(data, collections.OrderedDict)
 
 
 def test_open(codec, dataset):
-    src = codec.cls()
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
+    # with open(codec.find_file(dataset.filename)) as :
+
     assert (
         open(codec.find_file(dataset.filename)).read()
-        == src.open(codec.find_file(dataset.filename)).read()
+        == obj.open(codec.find_file(dataset.filename)).read()
     )
 
     with pytest.raises(IOError):
-        src.open("noneexistant")
+        obj.open("noneexistant")
     with pytest.raises(IOError):
-        src.open("", stdio=False)
+        obj.open("", stdio=False)
 
-    assert sys.stdin == src.open("")
-    assert sys.stdin == src.open("-")
+    assert sys.stdin == obj.open("")
+    assert sys.stdin == obj.open("-")
 
 
 def test_load(codec, dataset):
-    src = codec.cls()
-    assert dataset.expected == src.load(open(codec.find_file(dataset.filename)))
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
+    assert dataset.expected == obj.load(open(codec.find_file(dataset.filename)))
 
 
 def test_loads(codec, dataset):
-    src = codec.cls()
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
     data = codec.open_file(dataset.filename)
     print(data)
     print(data.read())
-    assert dataset.expected == src.loads(codec.open_file(dataset.filename).read())
+    assert dataset.expected == obj.loads(codec.open_file(dataset.filename).read())
 
 
 def test_loadu(codec, dataset):
-    src = codec.cls()
-    assert dataset.expected == src.loadu(codec.find_file(dataset.filename))
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
+    assert dataset.expected == obj.loadu(codec.find_file(dataset.filename))
 
 
 def test_dump(codec, dataset, tmpdir):
+    # XXX normalize
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
     dstfile = tmpdir.join("dump" + obj.extension)
     obj.dump(dataset.expected, dstfile.open("w"))
     assert dataset.expected == obj.load(dstfile.open())
@@ -135,6 +146,8 @@ def test_dump(codec, dataset, tmpdir):
 
 def test_dumps(codec, dataset, tmpdir):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
     dstfile = tmpdir.join("dump" + obj.extension)
     obj.dumpu(dataset.expected, str(dstfile))
     assert dataset.expected == obj.load(dstfile.open())
@@ -142,16 +155,20 @@ def test_dumps(codec, dataset, tmpdir):
 
 def test_dumpu(codec, dataset, tmpdir):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
     dstfile = tmpdir.join("dump" + obj.extension)
     assert dataset.expected == obj.loads(obj.dumps(dataset.expected))
 
 
 def test_find_datafile(codec, dataset):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
 
     print(dataset.filename)
     print(data_dir)
-    files = munge.find_datafile("set0", data_dir)
+    files = munge.find_datafile("dict0", data_dir)
     # should == number of codec tests
     assert files
 
@@ -170,7 +187,10 @@ def test_find_datafile(codec, dataset):
 
 def test_load_datafile(codec, dataset):
     obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
 
+    # XXX move the nonexistant tests to their own function so they're not repeatedly called
     with pytest.raises(IOError):
         munge.load_datafile("nonexistant", data_dir)
 
@@ -192,7 +212,6 @@ def test_load_datafile(codec, dataset):
     assert data
 
     # test default search path '.'
-    # files = munge.find_datafile('set0', data_dir)
     files = munge.find_datafile(fq_path, this_dir)
     assert 1 == len(files)
     relpath = os.path.relpath(files[0][1])
