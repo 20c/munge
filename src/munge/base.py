@@ -8,6 +8,8 @@ from munge import codec
 
 
 class Meta(type):
+    """Metadata class to check and register codec classes."""
+
     def __init__(cls, name, bases, attrs):
         if name == "CodecBase":
             super().__init__(name, bases, attrs)

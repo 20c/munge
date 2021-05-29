@@ -14,6 +14,7 @@ data_dir = os.path.join(this_dir, "data")
 test_codecs = []
 for tags, cls in list(munge.get_codecs().items()):
     if any(name in ("json", "toml", "yaml") for name in tags):
+        print(f"appending codec {cls.extension}")
         test_codecs.append(cls)
 
 
