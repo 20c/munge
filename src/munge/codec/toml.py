@@ -3,7 +3,7 @@ from munge.base import CodecBase
 try:
     import toml
 
-except:
+except ImportError:
     pass
 
 
