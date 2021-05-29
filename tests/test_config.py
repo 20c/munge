@@ -17,7 +17,6 @@ extra_schemes = {"tyam": {"type": "toml", "cls": munge.get_codec("toml")}}
 
 
 def test_parse_url():
-    # django = munge.get_codec("django")
     mysql = munge.get_codec("mysql")
     json = munge.get_codec("json")
     toml = munge.get_codec("toml")
@@ -38,13 +37,6 @@ def test_parse_url():
     conf = config.parse_url("tyam:test", extra_schemes)
     assert toml == conf.cls
     assert "test" == conf.url.path
-
-    #   conf = config.parse_url(
-    #       "django:///home/user/project/settings_dir.settings?app_name/model"
-    #   )
-    #   assert django == conf.cls
-    #   assert "/home/user/project/settings_dir.settings" == conf.url.path
-    #   assert "app_name/model" == conf.url.query
 
     conf = config.parse_url("json:http://example.com/test.txt")
     assert json == conf.cls

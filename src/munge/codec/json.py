@@ -17,8 +17,8 @@ class Json(CodecBase):
     def load(self, fobj, **kwargs):
         return json.load(fobj, **self.__kwargs)
 
-    def loads(self, instr, **kwargs):
-        return json.loads(instr, **self.__kwargs)
+    def loads(self, input_string, **kwargs):
+        return json.loads(input_string, **self.__kwargs)
 
     def dump(self, data, fobj, **kwargs):
         return json.dump(data, fobj, **kwargs)
