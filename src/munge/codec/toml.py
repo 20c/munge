@@ -6,6 +6,7 @@ try:
 except:
     pass
 
+
 class Toml(CodecBase):
     supports_dict = True
     extensions = ["toml"]
