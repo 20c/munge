@@ -11,7 +11,7 @@ def add_codec(exts, cls):
     # check for dupe extensions
     dupe_exts = {ext for k in list(__codecs.keys()) for ext in k}.intersection(exts)
     if dupe_exts:
-        raise ValueError("duplicate extension %s" % str(dupe_exts))
+        raise ValueError(f"duplicate extension {str(dupe_exts)}")
 
     __codecs[exts] = cls
 
@@ -75,9 +75,7 @@ def load_datafile(name, search_path=("."), codecs=get_codecs(), **kwargs):
     if not mod:
         if "default" in kwargs:
             return kwargs["default"]
-        raise OSError(
-            "file {} not found in search path {}".format(name, str(search_path))
-        )
+        raise OSError(f"file {name} not found in search path {str(search_path)}")
 
     (codec, datafile) = mod[0]
     return codec().load(open(datafile))
