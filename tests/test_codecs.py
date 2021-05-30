@@ -135,14 +135,34 @@ def test_loadu(codec, dataset):
 
 
 def test_dump(codec, dataset, tmpdir):
-    # XXX normalize
     obj = codec.cls()
     if not obj.supports_data(dataset.expected):
         return
     dstfile = tmpdir.join("dump" + obj.extension)
     obj.dump(dataset.expected, dstfile.open("w"))
-    assert dataset.expected == obj.load(dstfile.open())
-    # assert codec.open_file(dataset.filename).read() == dstfile.read()
+    with dstfile.open() as fobj:
+        assert dataset.expected == obj.load(fobj)
+
+
+def test_roundtrip(codec, dataset, tmpdir):
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
+    if not obj.supports_roundtrip:
+        return
+
+    data = obj.load(open(codec.find_file(dataset.filename)))
+    for section in dataset.expected:
+        for k, v in dataset.expected[section].items():
+            data[section][k] = v
+
+    dumped = obj.dumps(data)
+    print(f"dumping: {dumped}")
+
+    dstfile = tmpdir.join("dump" + obj.extension)
+    obj.dump(data, dstfile.open("w"))
+    with dstfile.open() as fobj:
+            assert codec.open_file(dataset.filename).read() == fobj.read()
 
 
 def test_dumps(codec, dataset, tmpdir):

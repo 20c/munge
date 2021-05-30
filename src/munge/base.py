@@ -32,6 +32,7 @@ class Meta(type):
 class CodecBase(metaclass=Meta):
     supports_dict = False
     supports_list = False
+    supports_roundtrip = False
 
     def __init__(self, config=None):
         if config:

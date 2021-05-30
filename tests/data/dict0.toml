@@ -1,4 +1,5 @@
 [munge]
-list0 = [ "item0", "item1",]
-int0 = 42
+# list0
+list0 = ["item0", "item1"]
+int0 = 42 # the answer to everything
 str0 = "str0"
