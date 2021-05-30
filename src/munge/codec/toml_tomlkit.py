@@ -3,7 +3,6 @@ from munge.base import CodecBase
 try:
     import tomlkit
 
-
     class TomlKit(CodecBase):
         supports_dict = True
         supports_roundtrip = True

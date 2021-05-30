@@ -162,7 +162,7 @@ def test_roundtrip(codec, dataset, tmpdir):
     dstfile = tmpdir.join("dump" + obj.extension)
     obj.dump(data, dstfile.open("w"))
     with dstfile.open() as fobj:
-            assert codec.open_file(dataset.filename).read() == fobj.read()
+        assert codec.open_file(dataset.filename).read() == fobj.read()
 
 
 def test_dumps(codec, dataset, tmpdir):
