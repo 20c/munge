@@ -48,6 +48,7 @@ Unreleased:
   - download and repo urls to setup.py (#10)
   - toml support
   - extras
+  - roundtrip support
   changed: []
   deprecated: []
   fixed: []
