@@ -1,28 +1,16 @@
-from munge.base import CodecBase
+import importlib
+import os
 
 try:
-    import toml
+    if os.environ.get("MUNGE_TOML_LIBRARY", None):
+        importlib.import_module(f"munge.codec.toml_{os.environ['MUNGE_TOML_LIBRARY']}")
+    else:
+        import munge.codec.toml_tomlkit  # noqa isort:skip
+        import munge.codec.toml_toml  # noqa
 
+except ValueError as exc:
+    # don't load both toml modules
+    if str(exc).startswith("duplicate extension"):
+        pass
 except ImportError:
     pass
-
-
-class Toml(CodecBase):
-    supports_dict = True
-    extensions = ["toml"]
-    __kwargs = {}
-
-    def set_type(self, name, typ):
-        pass
-
-    def load(self, fobj, **kwargs):
-        return toml.load(fobj, **self.__kwargs)
-
-    def loads(self, input_string, **kwargs):
-        return toml.loads(input_string, **self.__kwargs)
-
-    def dump(self, data, fobj, **kwargs):
-        return toml.dump(data, fobj, **kwargs)
-
-    def dumps(self, data):
-        return toml.dumps(data)

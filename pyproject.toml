@@ -2,6 +2,8 @@
 name = "munge"
 version = "1.1.0"
 description = "data manipulation library and client"
+readme = "README.md"
+repository = "https://github.com/20c/munge/"
 authors = ["20C <code@20c.com>"]
 license = "Apache-2.0"
 
@@ -28,7 +30,7 @@ click = "^8.0.1"
 
 PyYAML = {version = "^5.1", optional = true}
 toml = {version = "^0.10.2", optional = true}
-# tomlkit = {version = "^0.7.2", optional = true}
+tomlkit = {version = "^0.7.2", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
@@ -46,8 +48,15 @@ pre-commit = "^2"
 mypy = "^0.812"
 pyupgrade = "^2"
 
+# ctl
+ctl = "^1.0.0"
+jinja2 = "^2.11.2"
+tmpl = "^0.3.0"
+twine = "^3.3.0"
+
 [tool.poetry.extras]
 toml = ["toml"]
+tomlkit = ["tomlkit"]
 yaml = ["PyYAML"]
 
 [build-system]

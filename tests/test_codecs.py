@@ -14,6 +14,7 @@ data_dir = os.path.join(this_dir, "data")
 test_codecs = []
 for tags, cls in list(munge.get_codecs().items()):
     if any(name in ("json", "toml", "yaml") for name in tags):
+        print(f"appending codec {cls.extension}")
         test_codecs.append(cls)
 
 
@@ -134,14 +135,34 @@ def test_loadu(codec, dataset):
 
 
 def test_dump(codec, dataset, tmpdir):
-    # XXX normalize
     obj = codec.cls()
     if not obj.supports_data(dataset.expected):
         return
     dstfile = tmpdir.join("dump" + obj.extension)
     obj.dump(dataset.expected, dstfile.open("w"))
-    assert dataset.expected == obj.load(dstfile.open())
-    # assert codec.open_file(dataset.filename).read() == dstfile.read()
+    with dstfile.open() as fobj:
+        assert dataset.expected == obj.load(fobj)
+
+
+def test_roundtrip(codec, dataset, tmpdir):
+    obj = codec.cls()
+    if not obj.supports_data(dataset.expected):
+        return
+    if not obj.supports_roundtrip:
+        return
+
+    data = obj.load(open(codec.find_file(dataset.filename)))
+    for section in dataset.expected:
+        for k, v in dataset.expected[section].items():
+            data[section][k] = v
+
+    dumped = obj.dumps(data)
+    print(f"dumping: {dumped}")
+
+    dstfile = tmpdir.join("dump" + obj.extension)
+    obj.dump(data, dstfile.open("w"))
+    with dstfile.open() as fobj:
+        assert codec.open_file(dataset.filename).read() == fobj.read()
 
 
 def test_dumps(codec, dataset, tmpdir):
@@ -190,7 +211,7 @@ def test_load_datafile(codec, dataset):
     if not obj.supports_data(dataset.expected):
         return
 
-    # XXX move the nonexistant tests to their own function so they're not repeatedly called
+    # TODO move the nonexistant tests to their own function so they're not repeatedly called
     with pytest.raises(IOError):
         munge.load_datafile("nonexistant", data_dir)
 

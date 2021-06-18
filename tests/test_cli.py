@@ -18,5 +18,5 @@ def test_cli():
     rv = runner.invoke(munge.cli.main, ["--list-codecs"])
     assert 0 == rv.exit_code
 
-    rv = runner.invoke(munge.cli.main, [os.path.join(data_dir, "dict0.yml"), "json:"])
+    rv = runner.invoke(munge.cli.main, [os.path.join(data_dir, "dict0.toml"), "json:"])
     assert 0 == rv.exit_code

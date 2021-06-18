@@ -1,0 +1,5 @@
+[addrbook.site0]
+url = "https://example.com/data.json"
+user = "user"
+password = "secr3t"
+timeout = 60

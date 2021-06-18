@@ -48,7 +48,10 @@ Unreleased:
   - download and repo urls to setup.py (#10)
   - toml support
   - extras
-  changed: []
+  - roundtrip support
+  - support for typed codecs (#3)
+  changed:
+  - don't sort keys by default in yaml
   deprecated: []
   fixed: []
   removed: []

@@ -13,38 +13,30 @@ from munge import config
 test_dir = os.path.relpath(os.path.dirname(__file__))
 data_dir = os.path.join(test_dir, "data")
 conf0_dir = os.path.join(data_dir, "conf0")
-extra_schemes = {"tyam": {"type": "yaml", "cls": munge.get_codec("yaml")}}
+extra_schemes = {"tyam": {"type": "toml", "cls": munge.get_codec("toml")}}
 
 
 def test_parse_url():
-    # django = munge.get_codec("django")
     mysql = munge.get_codec("mysql")
     json = munge.get_codec("json")
-    yaml = munge.get_codec("yaml")
+    toml = munge.get_codec("toml")
 
     # fail on empty
     with pytest.raises(ValueError):
         config.parse_url("")
 
-    conf = config.parse_url("yaml:test")
-    conf = config.parse_url("yaml:test")
-    assert yaml == conf.cls
+    conf = config.parse_url("toml:test")
+    conf = config.parse_url("toml:test")
+    assert toml == conf.cls
     assert "test" == conf.url.path
 
-    conf = config.parse_url("test.yaml")
-    assert yaml == conf.cls
-    assert "test.yaml" == conf.url.path
+    conf = config.parse_url("test.toml")
+    assert toml == conf.cls
+    assert "test.toml" == conf.url.path
 
     conf = config.parse_url("tyam:test", extra_schemes)
-    assert yaml == conf.cls
+    assert toml == conf.cls
     assert "test" == conf.url.path
-
-    #   conf = config.parse_url(
-    #       "django:///home/user/project/settings_dir.settings?app_name/model"
-    #   )
-    #   assert django == conf.cls
-    #   assert "/home/user/project/settings_dir.settings" == conf.url.path
-    #   assert "app_name/model" == conf.url.query
 
     conf = config.parse_url("json:http://example.com/test.txt")
     assert json == conf.cls
@@ -70,7 +62,7 @@ conf0_data = {
 
 
 class DefaultConfig(munge.Config):
-    defaults = {"config": default_config, "config_dir": "~/.mungeX", "codec": "yaml"}
+    defaults = {"config": default_config, "config_dir": "~/.mungeX", "codec": "toml"}
 
     class Defaults:
         config = default_config
@@ -255,7 +247,7 @@ def test_config_write(conf, tmpdir):
         type(conf)().write()
 
     cdir = tmpdir.mkdir(type(conf).__name__)
-    conf.write(str(cdir), "yaml")
+    conf.write(str(cdir), "toml")
 
     # create an exact copy
     kwargs = conf._defaults.copy()
