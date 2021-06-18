@@ -211,7 +211,7 @@ def test_load_datafile(codec, dataset):
     if not obj.supports_data(dataset.expected):
         return
 
-    # XXX move the nonexistant tests to their own function so they're not repeatedly called
+    # TODO move the nonexistant tests to their own function so they're not repeatedly called
     with pytest.raises(IOError):
         munge.load_datafile("nonexistant", data_dir)
 
