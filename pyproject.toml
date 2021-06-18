@@ -46,6 +46,12 @@ pre-commit = "^2"
 mypy = "^0.812"
 pyupgrade = "^2"
 
+# ctl
+ctl = "^1.0.0"
+jinja2 = "^2.11.2"
+tmpl = "^0.3.0"
+twine = "^3.3.0"
+
 [tool.poetry.extras]
 toml = ["toml"]
 tomlkit = ["tomlkit"]
