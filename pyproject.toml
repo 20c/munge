@@ -2,6 +2,8 @@
 name = "munge"
 version = "1.1.0"
 description = "data manipulation library and client"
+readme = "README.md"
+repository = "https://github.com/20c/munge/"
 authors = ["20C <code@20c.com>"]
 license = "Apache-2.0"
 

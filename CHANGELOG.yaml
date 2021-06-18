@@ -49,6 +49,7 @@ Unreleased:
   - toml support
   - extras
   - roundtrip support
+  - support for typed codecs (#3)
   changed:
   - don't sort keys by default in yaml
   deprecated: []
