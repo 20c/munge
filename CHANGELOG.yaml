@@ -49,7 +49,8 @@ Unreleased:
   - toml support
   - extras
   - roundtrip support
-  changed: []
+  changed:
+  - don't sort keys by default in yaml
   deprecated: []
   fixed: []
   removed: []

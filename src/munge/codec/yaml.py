@@ -18,10 +18,12 @@ try:
             return self.load(*args, **kwargs)
 
         def dump(self, data, fobj):
-            return fobj.write(yaml.safe_dump(data, default_flow_style=False))
+            return fobj.write(
+                yaml.safe_dump(data, default_flow_style=False, sort_keys=False)
+            )
 
         def dumps(self, data):
-            return yaml.safe_dump(data, default_flow_style=False)
+            return yaml.safe_dump(data, default_flow_style=False, sort_keys=False)
 
 
 except ImportError:
