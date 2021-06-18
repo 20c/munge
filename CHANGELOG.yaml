@@ -44,6 +44,13 @@
   removed:
   - python 3.5 support
 Unreleased:
+  added: []
+  fixed: []
+  changed: []
+  deprecated: []
+  removed: []
+  security: []
+1.2.0:
   added:
   - download and repo urls to setup.py (#10)
   - toml support
@@ -52,7 +59,3 @@ Unreleased:
   - support for typed codecs (#3)
   changed:
   - don't sort keys by default in yaml
-  deprecated: []
-  fixed: []
-  removed: []
-  security: []

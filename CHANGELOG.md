@@ -2,8 +2,17 @@
 
 
 ## Unreleased
+
+
+## 1.2.0
 ### Added
 - download and repo urls to setup.py (#10)
+- toml support
+- extras
+- roundtrip support
+- support for typed codecs (#3)
+### Changed
+- don't sort keys by default in yaml
 
 
 ## 1.1.0
