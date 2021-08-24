@@ -4,6 +4,11 @@
 ## Unreleased
 
 
+## 1.2.1
+### Changed
+- reverted pinning of click version, now pinned again at >= 5
+
+
 ## 1.2.0
 ### Added
 - download and repo urls to setup.py (#10)
