@@ -1,8 +1,8 @@
 Unreleased:
   added: []
-  fixed: []
   changed: []
   deprecated: []
+  fixed: []
   removed: []
   security: []
 0.2.1:
@@ -59,3 +59,6 @@ Unreleased:
   - support for typed codecs (#3)
   changed:
   - don't sort keys by default in yaml
+1.2.1:
+  changed:
+  - reverted pinning of click version, now pinned again at >= 5
