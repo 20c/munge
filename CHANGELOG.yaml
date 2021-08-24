@@ -1,3 +1,10 @@
+Unreleased:
+  added: []
+  changed: []
+  deprecated: []
+  fixed: []
+  removed: []
+  security: []
 0.2.1:
   added:
   - CHANGELOG!
@@ -55,10 +62,3 @@
 1.2.1:
   changed:
   - reverted pinning of click version, now pinned again at >= 5
-Unreleased:
-  added: []
-  changed: []
-  deprecated: []
-  fixed: []
-  removed: []
-  security: []
