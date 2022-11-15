@@ -13,10 +13,10 @@ license = "Apache-2.0"
 classifiers = [
   "Topic :: Software Development",
   "License :: OSI Approved :: Apache Software License",
-  "Programming Language :: Python :: 3.6",
   "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
 ]
 
 [[tool.poetry.packages]]
@@ -31,32 +31,37 @@ multi_line_output = 3
 munge = "munge.cli:main"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.7"
 requests = "^2.6"
 click = ">=5.1"
 
 [tool.poetry.dev-dependencies]
-# tests
-pytest = "*"
+# testing
+codecov = ">=2"
+coverage = ">=5"
+pytest = ">=6"
 pytest-cov = "*"
-codecov = "^2"
-coverage = "^5.5"
-tox = "^3.15"
+tox = ">=3.15"
 
 # linting
-bandit = "^1"
-black = "^20.8b1"
-isort = "^5.7.0"
-flake8 = "^3"
-pre-commit = "^2"
-mypy = "^0.812"
-pyupgrade = "^2"
+# bandit = ">=1.6.2"
+black = ">=20"
+isort = ">=5.7"
+flake8 = ">=3.8"
+mypy = ">=0.950"
+pre-commit = ">=2.13"
+pyupgrade = ">=2.19"
+
+# docs
+markdown = "*"
+markdown-include = ">=0.5,<1"
+mkdocs = "^1.2.3"
 
 # ctl
-ctl = "^1.0.0"
-jinja2 = "^2.11.2"
-tmpl = "^0.3.0"
-twine = "^3.3.0"
+ctl = ">=1"
+jinja2 = ">=2"
+tmpl = ">=1"
+twine = "^4"
 
 [tool.poetry.extras]
 toml = [ "toml",]
@@ -64,7 +69,7 @@ tomlkit = [ "tomlkit",]
 yaml = [ "PyYAML",]
 
 [tool.poetry.dependencies.PyYAML]
-version = "^5.1"
+version = ">=5.1,<7"
 optional = true
 
 [tool.poetry.dependencies.toml]
