@@ -25,6 +25,5 @@ try:
         def dumps(self, data):
             return yaml.safe_dump(data, default_flow_style=False, sort_keys=False)
 
-
 except ImportError:
     pass

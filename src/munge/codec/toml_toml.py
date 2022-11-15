@@ -23,6 +23,5 @@ try:
         def dumps(self, data):
             return toml.dumps(data)
 
-
 except ImportError:
     pass
