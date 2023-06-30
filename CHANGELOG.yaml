@@ -1,9 +1,11 @@
 Unreleased:
-  added: []
+  added:
+  - python 3.10 and 3.11
   changed: []
   deprecated: []
   fixed: []
-  removed: []
+  removed:
+  - python 3.6 and 3.7
   security: []
 0.2.1:
   added:
