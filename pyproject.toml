@@ -58,12 +58,6 @@ markdown = "*"
 markdown-include = ">=0.5,<1"
 mkdocs = ">=1.2.3"
 
-# ctl
-ctl = ">=1"
-jinja2 = ">=2"
-tmpl = ">=1"
-twine = ">=3.3"
-
 [tool.poetry.extras]
 toml = [ "toml",]
 tomlkit = [ "tomlkit",]
