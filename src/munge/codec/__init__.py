@@ -18,7 +18,7 @@ def add_codec(exts, cls):
 
 # TODO - could take a type argument to get only codecs that can handle that data type
 def get_codecs():
-    """ Get all currently registered codecs. """
+    """Get all currently registered codecs."""
     return __codecs
 
 
