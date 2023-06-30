@@ -24,6 +24,5 @@ try:
         def dumps(self, data, **kwargs):
             return tomlkit.dumps(data)
 
-
 except ImportError:
     pass
