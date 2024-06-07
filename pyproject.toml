@@ -44,6 +44,8 @@ pytest-filedata = "^0.4.0"
 pytest-cov = "*"
 tox = ">=3.20"
 tox-gh-actions = "^2.9.1"
+toml = "^0.10.2"
+tomlkit = "^0.7.2"
 
 # linting
 black = ">=20"
