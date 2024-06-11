@@ -1,7 +1,6 @@
-
 import sys
-from urllib.parse import urlsplit
 from collections.abc import Mapping
+from urllib.parse import urlsplit
 
 import requests
 

@@ -1,9 +1,8 @@
-
 import copy
 import os
-from urllib.parse import urlsplit
-from collections.abc import MutableMapping
 from collections import namedtuple
+from collections.abc import MutableMapping
+from urllib.parse import urlsplit
 
 import munge
 import munge.util
