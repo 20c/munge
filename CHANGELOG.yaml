@@ -1,6 +1,8 @@
 Unreleased:
-  added: []
-  fixed: []
+  added:
+  - support for py3.12
+  fixed:
+  - finding data file in tests
   changed: []
   deprecated: []
   removed: []
