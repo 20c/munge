@@ -1,5 +1,5 @@
-import collections
 import sys
+from collections.abc import Mapping
 from urllib.parse import urlsplit
 
 import requests
@@ -48,7 +48,7 @@ class CodecBase(metaclass=Meta):
         raise NotImplementedError("set_type has not been implemented")
 
     def supports_data(self, data):
-        if isinstance(data, collections.abc.Mapping):
+        if isinstance(data, Mapping):
             return self.supports_dict
         if isinstance(data, list):
             return self.supports_list

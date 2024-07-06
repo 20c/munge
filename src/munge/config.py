@@ -1,6 +1,7 @@
-import collections
 import copy
 import os
+from collections import namedtuple
+from collections.abc import MutableMapping
 from urllib.parse import urlsplit
 
 import munge
@@ -10,7 +11,7 @@ import munge.util
 # this wouldn't work with tabular data
 # need metaclass to allow users to set info once on class
 # TODO rename to BaseConfig, set standard setup for Config?
-class Config(collections.abc.MutableMapping):
+class Config(MutableMapping):
     """
     class for storing and manipulating data for config files
     """
@@ -154,7 +155,7 @@ class Config(collections.abc.MutableMapping):
                 self.read(cdir, **kwargs)
                 return cdir
 
-            except OSError as e:
+            except OSError:
                 pass
 
     def write(self, config_dir=None, config_name=None, codec=None):
@@ -196,7 +197,7 @@ def find_cls(name, extra_schemes={}):
     return munge.get_codec(name)
 
 
-class MungeURL(collections.namedtuple("MungeURL", "cls url")):
+class MungeURL(namedtuple("MungeURL", "cls url")):
     pass
 
 

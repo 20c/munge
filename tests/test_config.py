@@ -1,9 +1,5 @@
-import collections
-import copy
-import filecmp
 import os
 import shutil
-import sys
 
 import pytest
 
@@ -18,6 +14,7 @@ extra_schemes = {"tyam": {"type": "toml", "cls": munge.get_codec("toml")}}
 
 def test_parse_url():
     mysql = munge.get_codec("mysql")
+    assert mysql
     json = munge.get_codec("json")
     toml = munge.get_codec("toml")
 
@@ -123,6 +120,7 @@ def conf0(request):
 def test_derived_config_obj(conf):
     assert default_config == conf.default()
     baseconf = munge.config.Config(**DefaultConfig.defaults)
+    assert baseconf
 
 
 def test_config_obj(conf):
@@ -272,4 +270,4 @@ def test_conf0(conf0):
     assert conf0_data["addrbook"]["site0"]["url"] == conf0.get_nested(
         "addrbook", "site0", "url"
     )
-    assert None == conf0.get_nested("addrbook", "site1", "url")
+    assert conf0.get_nested("addrbook", "site1", "url") is None
