@@ -19,8 +19,8 @@ def recursive_update(a, b, **kwargs):
                 recursive_update(a[k], v, **kwargs)
                 continue
 
-        elif merge_lists and type(v) is list:
-            if type(a.get(k, None)) is list:
+        elif merge_lists and isinstance(v, list):
+            if isinstance(a.get(k, None), list):
                 if copy:
                     a[k].extend(deepcopy(v))
                 else:

@@ -1,7 +1,5 @@
 import os
 
-import click
-import pytest
 from click.testing import CliRunner
 
 import munge.cli

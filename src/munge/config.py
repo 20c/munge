@@ -155,7 +155,7 @@ class Config(MutableMapping):
                 self.read(cdir, **kwargs)
                 return cdir
 
-            except OSError as e:
+            except OSError:
                 pass
 
     def write(self, config_dir=None, config_name=None, codec=None):
