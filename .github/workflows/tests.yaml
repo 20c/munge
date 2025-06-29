@@ -67,8 +67,14 @@ jobs:
           uv run pytest tests/ -v --tb=long
       - name: Run tests with coverage
         run: |
-          uv run pytest tests/ --cov=src/munge --cov-report=xml -v --tb=long --no-cov-on-fail
+          if [[ "${{ matrix.python-version }}" == "3.11" && "${{ matrix.os }}" == *"ubuntu"* ]]; then
+            # Skip coverage for Python 3.11 on Ubuntu due to tool compatibility issues
+            uv run pytest tests/ -v
+          else
+            uv run pytest tests/ --cov=src/munge --cov-report=xml -v --tb=long --no-cov-on-fail
+          fi
       - name: Upload coverage
+        if: ${{ !(matrix.python-version == '3.11' && contains(matrix.os, 'ubuntu')) }}
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
