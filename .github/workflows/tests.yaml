@@ -19,9 +19,12 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --extra dev
+      - name: Install pre-commit hooks
+        run: |
+          uv run pre-commit install --install-hooks
       - name: Run linters
         run: |
-          uv run pre-commit run --all-files
+          uv run pre-commit run --all-files --verbose
 
   test:
     needs: linting
