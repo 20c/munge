@@ -1,6 +1,4 @@
 import collections
-
-# import filecmp  # noqa: F401
 import os
 import sys
 
@@ -178,7 +176,8 @@ def test_dumpu(codec, dataset, tmpdir):
     obj = codec.cls()
     if not obj.supports_data(dataset.expected):
         return
-    # dstfile = tmpdir.join("dump" + obj.extension)
+    dstfile = tmpdir.join("dump" + obj.extension)
+    assert dstfile
     assert dataset.expected == obj.loads(obj.dumps(dataset.expected))
 
 

@@ -1,6 +1,3 @@
-# import collections  # noqa: F401
-# import copy  # noqa: F401
-# import filecmp  # noqa: F401
 import os
 import shutil
 
@@ -19,7 +16,8 @@ extra_schemes = {"tyam": {"type": "toml", "cls": munge.get_codec("toml")}}
 
 
 def test_parse_url():
-    # mysql = munge.get_codec("mysql")
+    mysql = munge.get_codec("mysql")
+    assert mysql
     json = munge.get_codec("json")
     toml = munge.get_codec("toml")
 
@@ -124,7 +122,8 @@ def conf0(request):
 
 def test_derived_config_obj(conf):
     assert default_config == conf.default()
-    # baseconf = munge.config.Config(**DefaultConfig.defaults)
+    baseconf = munge.config.Config(**DefaultConfig.defaults)
+    assert baseconf
 
 
 def test_config_obj(conf):

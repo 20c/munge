@@ -1,7 +1,3 @@
-# import copy  # noqa: F401
-
-# import pytest  # noqa: F401
-
 import munge.util
 
 

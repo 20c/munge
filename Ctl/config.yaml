@@ -16,5 +16,5 @@ ctl:
     - name: version
       type: version
       config:
-        branch_dev: master
-        branch_release: master
+        branch_dev: main
+        branch_release: main

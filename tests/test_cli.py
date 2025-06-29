@@ -1,7 +1,5 @@
 import os
 
-# import click  # noqa: F401
-# import pytest  # noqa: F401
 from click.testing import CliRunner
 
 import munge.cli
