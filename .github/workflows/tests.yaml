@@ -48,9 +48,15 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --extra dev
+      - name: Debug environment
+        run: |
+          echo "Python version: $(python --version)"
+          echo "uv version: $(uv --version)"
+          uv tree
+          uv run python -c "import sys; print('Python executable:', sys.executable)"
       - name: Run tests
         run: |
-          uv run pytest tests/ --cov=src/munge --cov-report=xml
+          uv run pytest tests/ --cov=src/munge --cov-report=xml -v --tb=short
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
