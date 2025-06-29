@@ -154,7 +154,7 @@ class Config(collections.abc.MutableMapping):
                 self.read(cdir, **kwargs)
                 return cdir
 
-            except OSError as e:
+            except OSError:
                 pass
 
     def write(self, config_dir=None, config_name=None, codec=None):
@@ -247,6 +247,6 @@ def parse_url(url, extra_schemes={}):
         cls = find_cls(ext, extra_schemes)
 
         if not cls:
-            raise ValueError("unable to find codec for %s" % url)
+            raise ValueError(f"unable to find codec for {url}")
 
     return MungeURL(cls, res)

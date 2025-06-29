@@ -1,5 +1,6 @@
 import collections
-import filecmp
+
+# import filecmp  # noqa: F401
 import os
 import sys
 
@@ -96,10 +97,9 @@ def test_open(codec, dataset):
         return
     # with open(codec.find_file(dataset.filename)) as :
 
-    assert (
-        open(codec.find_file(dataset.filename)).read()
-        == obj.open(codec.find_file(dataset.filename)).read()
-    )
+    file1_content = open(codec.find_file(dataset.filename)).read()
+    file2_content = obj.open(codec.find_file(dataset.filename)).read()
+    assert file1_content == file2_content
 
     with pytest.raises(IOError):
         obj.open("noneexistant")
@@ -178,7 +178,7 @@ def test_dumpu(codec, dataset, tmpdir):
     obj = codec.cls()
     if not obj.supports_data(dataset.expected):
         return
-    dstfile = tmpdir.join("dump" + obj.extension)
+    # dstfile = tmpdir.join("dump" + obj.extension)
     assert dataset.expected == obj.loads(obj.dumps(dataset.expected))
 
 
@@ -216,7 +216,7 @@ def test_load_datafile(codec, dataset):
         munge.load_datafile("nonexistant", data_dir)
 
     # default value
-    assert None == munge.load_datafile("nonexistant", data_dir, default=None)
+    assert munge.load_datafile("nonexistant", data_dir, default=None) is None
     assert "DEFAULT" == munge.load_datafile("nonexistant", data_dir, default="DEFAULT")
 
     data = munge.load_datafile(dataset.filename, this_dir)

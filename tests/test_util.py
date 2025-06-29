@@ -1,6 +1,6 @@
-import copy
+# import copy  # noqa: F401
 
-import pytest
+# import pytest  # noqa: F401
 
 import munge.util
 

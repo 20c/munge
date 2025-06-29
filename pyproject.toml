@@ -5,15 +5,17 @@ description = "data manipulation library and client"
 readme = "README.md"
 authors = [{name = "20C", email = "code@20c.com"}]
 license = {text = "Apache-2.0"}
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 
 classifiers = [
   "Topic :: Software Development", 
   "License :: OSI Approved :: Apache Software License", 
-  "Programming Language :: Python :: 3.6", 
   "Programming Language :: Python :: 3.7", 
   "Programming Language :: Python :: 3.8", 
   "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
 ]
 
 dependencies = [
@@ -40,12 +42,9 @@ dev = [
     "tox>=3.15",
     # linting
     "bandit>=1",
-    "black>=20.8b1",
-    "isort>=5.7.0",
-    "flake8>=3",
+    "ruff",
     "pre-commit>=2",
     "mypy>=0.812",
-    "pyupgrade>=2",
     # ctl
     "ctl>=1.0.0",
     "jinja2>=2.11.2",
@@ -60,6 +59,26 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/munge"]
 
-[tool.isort]
-profile = "black"
-multi_line_output = 3
+[tool.ruff]
+target-version = "py37"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+]
+ignore = [
+    "E501",  # line too long, handled by formatter
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["munge"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
