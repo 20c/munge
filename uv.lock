@@ -623,7 +623,10 @@ version = "1.3.0"
 source = { editable = "." }
 dependencies = [
     { name = "click" },
+    { name = "pyyaml" },
     { name = "requests" },
+    { name = "toml" },
+    { name = "tomlkit" },
 ]
 
 [package.optional-dependencies]
@@ -678,11 +681,14 @@ requires-dist = [
     { name = "pytest-cov", marker = "extra == 'dev'" },
     { name = "pytest-django", marker = "extra == 'dev'", specifier = ">=3.8" },
     { name = "pytest-filedata", marker = "extra == 'dev'", specifier = ">=1" },
+    { name = "pyyaml", specifier = ">=6.0.1" },
     { name = "pyyaml", marker = "extra == 'yaml'", specifier = ">=6.0.1" },
     { name = "requests", specifier = ">=2.6" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.1" },
     { name = "tmpl", marker = "extra == 'dev'", specifier = ">=0.3.0" },
+    { name = "toml", specifier = ">=0.10.2" },
     { name = "toml", marker = "extra == 'toml'", specifier = ">=0.10.2" },
+    { name = "tomlkit", specifier = ">=0.11.6" },
     { name = "tomlkit", marker = "extra == 'tomlkit'", specifier = ">=0.7.2" },
     { name = "tox", marker = "extra == 'dev'", specifier = ">=3.20" },
     { name = "tox-gh-actions", marker = "extra == 'dev'", specifier = ">=2.9.1" },
