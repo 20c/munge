@@ -8,11 +8,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install virtualenv from poetry
-        uses: 20c/workflows/poetry@v1
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+      - name: Install dependencies
+        run: |
+          uv sync --extra dev
       - name: Run linters
         run: |
-          poetry run pre-commit run --all-files
+          uv run pre-commit run --all-files
 
   test:
     needs: linting
@@ -24,13 +33,21 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Install virtualenv from poetry
-        uses: 20c/workflows/poetry@v1
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+      - name: Install dependencies
+        run: |
+          uv sync --extra dev
       - name: Run tests
-        run: poetry run tox -e py
+        run: |
+          uv run pytest tests/ --cov=src/munge --cov-report=xml
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
