@@ -54,9 +54,12 @@ jobs:
           echo "uv version: $(uv --version)"
           uv tree
           uv run python -c "import sys; print('Python executable:', sys.executable)"
-      - name: Run tests
+      - name: Run tests without coverage (debug)
         run: |
-          uv run pytest tests/ --cov=src/munge --cov-report=xml -v --tb=short
+          uv run pytest tests/ -v --tb=long
+      - name: Run tests with coverage
+        run: |
+          uv run pytest tests/ --cov=src/munge --cov-report=xml -v --tb=long --no-cov-on-fail
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
