@@ -1,0 +1,80 @@
+name: PyPI Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags like v1.0.0, v1.2.3, etc.
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write  # Required for trusted publishing to PyPI
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.7.17"
+
+      - name: Verify tag matches version
+        run: |
+          # Extract version from tag (remove 'v' prefix)
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          echo "Tag version: $TAG_VERSION"
+
+          # Extract version from pyproject.toml using Python
+          PROJECT_VERSION=$(python -c "
+          import tomllib
+          with open('pyproject.toml', 'rb') as f:
+              data = tomllib.load(f)
+          print(data['project']['version'])
+          ")
+          echo "Project version: $PROJECT_VERSION"
+
+          # Compare versions
+          if [ "$TAG_VERSION" != "$PROJECT_VERSION" ]; then
+            echo "❌ Tag version ($TAG_VERSION) does not match project version ($PROJECT_VERSION)"
+            exit 1
+          else
+            echo "✅ Tag version matches project version"
+          fi
+
+      - name: Install dependencies
+        run: |
+          uv sync --extra dev
+
+      - name: Build package
+        run: |
+          uv build
+
+      - name: Verify build
+        run: |
+          # Check that both wheel and source distribution were created
+          ls -la dist/
+          if [ ! -f dist/*.whl ] || [ ! -f dist/*.tar.gz ]; then
+            echo "❌ Build artifacts missing"
+            exit 1
+          fi
+          echo "✅ Build artifacts created successfully"
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          print-hash: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+          make_latest: true
