@@ -33,6 +33,10 @@ jobs:
       matrix:
         os: [ "ubuntu-latest", "macos-latest" ]
         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        exclude:
+          # Python 3.11 has compatibility issues on ubuntu-latest (ubuntu-24.04)
+          - os: "ubuntu-latest"
+            python-version: "3.11"
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
