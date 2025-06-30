@@ -18,7 +18,7 @@ jobs:
           version: "0.7.17"
       - name: Install dependencies
         run: |
-          uv sync --extra dev
+          uv sync --group dev
       - name: Install pre-commit hooks
         run: |
           uv run pre-commit install --install-hooks
@@ -33,10 +33,6 @@ jobs:
       matrix:
         os: [ "ubuntu-latest", "macos-latest" ]
         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
-        include:
-          # Use ubuntu-22.04 specifically for Python 3.11 to avoid runner issues
-          - os: "ubuntu-22.04"
-            python-version: "3.11"
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
@@ -51,30 +47,11 @@ jobs:
           version: "0.7.17"
       - name: Install dependencies
         run: |
-          uv sync --extra dev
-      - name: Debug environment
-        run: |
-          echo "Python version: $(python --version)"
-          echo "uv version: $(uv --version)"
-          uv tree
-          uv run python -c "import sys; print('Python executable:', sys.executable)"
-      - name: Clear Python cache
-        run: |
-          find . -type d -name __pycache__ -exec rm -rf {} + || true
-          find . -name "*.pyc" -delete || true
-      - name: Run tests without coverage (debug)
-        run: |
-          uv run pytest tests/ -v --tb=long
+          uv sync --group dev
       - name: Run tests with coverage
         run: |
-          if [[ "${{ matrix.python-version }}" == "3.11" && "${{ matrix.os }}" == *"ubuntu"* ]]; then
-            # Skip coverage for Python 3.11 on Ubuntu due to tool compatibility issues
-            uv run pytest tests/ -v
-          else
-            uv run pytest tests/ --cov=src/munge --cov-report=xml -v --tb=long --no-cov-on-fail
-          fi
+          uv run pytest tests/ --cov=src --cov-report=xml --cov-report=term-missing -v
       - name: Upload coverage
-        if: ${{ !(matrix.python-version == '3.11' && contains(matrix.os, 'ubuntu')) }}
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
