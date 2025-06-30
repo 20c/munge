@@ -34,12 +34,12 @@ version = "1.4.0"  # Update this line
 git add pyproject.toml
 git commit -m "Bump version to 1.4.0"
 
-# Create tag (must match version with 'v' prefix)
-git tag v1.4.0
+# Create tag (must match version exactly)
+git tag 1.4.0
 
 # Push everything
 git push origin main
-git push origin v1.4.0
+git push origin 1.4.0
 ```
 
 ## Automated Workflow Details
@@ -100,8 +100,8 @@ Supported formats:
 **Solution**: Ensure the git tag exactly matches the version in `pyproject.toml`:
 ```bash
 # If pyproject.toml has version = "1.4.0"
-# Tag must be exactly "v1.4.0"
-git tag v1.4.0
+# Tag must be exactly "1.4.0"
+git tag 1.4.0
 ```
 
 ### Build Failure
@@ -123,10 +123,10 @@ git tag v1.4.0
 **Solution**: Use a different version number or delete the existing tag:
 ```bash
 # Delete local tag
-git tag -d v1.4.0
+git tag -d 1.4.0
 
 # Delete remote tag (careful!)
-git push origin --delete v1.4.0
+git push origin --delete 1.4.0
 ```
 
 ## Security Considerations
@@ -167,11 +167,11 @@ If a release needs to be rolled back:
 ### GitHub
 ```bash
 # Delete GitHub release (keeps tag)
-gh release delete v1.4.0
+gh release delete 1.4.0
 
 # Delete tag if necessary
-git tag -d v1.4.0
-git push origin --delete v1.4.0
+git tag -d 1.4.0
+git push origin --delete 1.4.0
 ```
 
 ## Best Practices

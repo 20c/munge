@@ -29,8 +29,8 @@ This project uses **automated PyPI releases** triggered by version tags. No loca
 
 3. **Create and Push Tag** (triggers release):
    ```bash
-   git tag v1.4.0
-   git push origin v1.4.0
+   git tag 1.4.0
+   git push origin 1.4.0
    ```
 
 ### Automated Release Process
@@ -45,7 +45,7 @@ When you push a version tag, GitHub Actions automatically:
 You can also create tags through GitHub's web interface:
 1. Go to https://github.com/20c/munge/releases
 2. Click "Create a new release"
-3. Enter tag (e.g., `v1.4.0`) and release title
+3. Enter tag (e.g., `1.4.0`) and release title
 4. Click "Publish release" → triggers automated PyPI release
 
 ### Detailed Documentation
