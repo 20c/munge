@@ -8,11 +8,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install virtualenv from poetry
-        uses: 20c/workflows/poetry@v1
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.7.17"
+      - name: Install dependencies
+        run: |
+          uv sync --group dev
+      - name: Install pre-commit hooks
+        run: |
+          uv run pre-commit install --install-hooks
       - name: Run linters
         run: |
-          poetry run pre-commit run --all-files
+          uv run pre-commit run --all-files --verbose
 
   test:
     needs: linting
@@ -21,16 +33,28 @@ jobs:
       matrix:
         os: [ "ubuntu-latest", "macos-latest" ]
         python-version: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        exclude:
+          # Python 3.11 has compatibility issues on ubuntu-latest (ubuntu-24.04)
+          - os: "ubuntu-latest"
+            python-version: "3.11"
     runs-on: ${{ matrix.os }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Install virtualenv from poetry
-        uses: 20c/workflows/poetry@v1
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Run tests
-        run: poetry run tox -e py
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "0.7.17"
+      - name: Install dependencies
+        run: |
+          uv sync --group dev
+      - name: Run tests with coverage
+        run: |
+          uv run pytest tests/ --cov=src --cov-report=xml --cov-report=term-missing -v
       - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:

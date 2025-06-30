@@ -19,7 +19,7 @@ class Context:
     @classmethod
     def search_path(cls):
         return [
-            "$%s_HOME" % cls.app_name.upper(),
+            f"${cls.app_name.upper()}_HOME",
             os.path.join(".", "." + cls.app_name),
             os.path.expanduser(os.path.join("~", "." + cls.app_name)),
             click.get_app_dir(cls.app_name),
@@ -36,8 +36,7 @@ class Context:
             ),
             dict(
                 name="--home",
-                help="specify the home directory, by default will check in order: "
-                + ", ".join(cls.search_path()),
+                help=f"specify the home directory, by default will check in order: {', '.join(cls.search_path())}",
                 default=None,
             ),
             dict(
@@ -56,8 +55,7 @@ class Context:
         )(f)
         f = click.option(
             "--home",
-            help="specify the home directory, by default will check in order: "
-            + ", ".join(cls.search_path()),
+            help=f"specify the home directory, by default will check in order: {', '.join(cls.search_path())}",
             default=None,
         )(f)
         f = click.option(

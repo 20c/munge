@@ -24,6 +24,5 @@ try:
         def dumps(self, data, **kwargs):
             return tomlkit.dumps(data)
 
-except ImportError as e:
-    print(f"failed to import tomlkit module: {e}")
+except ImportError:
     pass

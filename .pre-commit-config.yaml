@@ -1,7 +1,11 @@
 fail_fast: false
 exclude: |
   (?x)^(
-      tests/data/.*
+      tests/data/.*|
+      \.tox/.*|
+      \.venv/.*|
+      build/.*|
+      dist/.*
   )$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -18,11 +22,3 @@ repos:
         args: [--fix]
       # Run the formatter.
       - id: ruff-format
-  - repo: local
-    hooks:
-      - id: pyupgrade
-        name: pyupgrade
-        entry: poetry run pyupgrade --py38-plus
-        language: python
-        types: [python]
-        pass_filenames: true

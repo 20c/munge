@@ -248,6 +248,6 @@ def parse_url(url, extra_schemes={}):
         cls = find_cls(ext, extra_schemes)
 
         if not cls:
-            raise ValueError("unable to find codec for %s" % url)
+            raise ValueError(f"unable to find codec for {url}")
 
     return MungeURL(cls, res)
