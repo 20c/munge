@@ -38,31 +38,6 @@ yaml = ["PyYAML>=6.0.1"]
 toml = ["toml>=0.10.2"]
 tomlkit = ["tomlkit>=0.7.2"]
 
-dev = [
-    "pytest>=6",
-    "pytest-cov",
-    "pytest-django>=3.8",
-    "pytest-filedata>=1",
-    "codecov>=2",
-    "coverage>=5.5",
-    "tox>=3.20",
-    "tox-gh-actions>=2.9.1",
-    # linting
-    "bandit>=1",
-    "ruff>=0.1",
-    "pre-commit>=2.13",
-    "mypy>=0.950",
-    # ctl
-    "ctl>=1.0.0",
-    "jinja2>=2.11.2",
-    "tmpl>=0.3.0",
-    "twine>=3.3.0",
-    # docs
-    "markdown",
-    "markdown-include>=0.5,<1",
-    "mkdocs>=1.2.3",
-]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -92,3 +67,29 @@ known-first-party = ["munge"]
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[dependency-groups]
+dev = [
+    "pytest>=6",
+    "pytest-cov",
+    "pytest-django>=3.8",
+    "pytest-filedata>=1",
+    "codecov>=2",
+    "coverage>=5.5",
+    "tox>=4.25.0",
+    "tox-gh-actions>=2.9.1",
+    # linting
+    "bandit>=1",
+    "ruff>=0.1",
+    "pre-commit>=2.13",
+    "mypy>=0.950",
+    # ctl
+    "ctl>=1.0.0",
+    "jinja2>=2.11.2",
+    "tmpl>=0.3.0",
+    "twine>=3.3.0",
+    # docs
+    "markdown",
+    "markdown-include>=0.5,<1",
+    "mkdocs>=1.2.3",
+]
