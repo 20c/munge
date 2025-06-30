@@ -6,6 +6,9 @@ import pytest
 import munge
 from munge import config
 
+# import sys  # noqa: F401
+
+
 test_dir = os.path.relpath(os.path.dirname(__file__))
 data_dir = os.path.join(test_dir, "data")
 conf0_dir = os.path.join(data_dir, "conf0")

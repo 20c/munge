@@ -95,10 +95,9 @@ def test_open(codec, dataset):
         return
     # with open(codec.find_file(dataset.filename)) as :
 
-    assert (
-        open(codec.find_file(dataset.filename)).read()
-        == obj.open(codec.find_file(dataset.filename)).read()
-    )
+    file1_content = open(codec.find_file(dataset.filename)).read()
+    file2_content = obj.open(codec.find_file(dataset.filename)).read()
+    assert file1_content == file2_content
 
     with pytest.raises(IOError):
         obj.open("noneexistant")

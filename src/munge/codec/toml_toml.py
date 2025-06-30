@@ -23,6 +23,5 @@ try:
         def dumps(self, data):
             return toml.dumps(data)
 
-except ImportError as e:
-    print(f"failed to import toml module: {e}")
+except ImportError:
     pass

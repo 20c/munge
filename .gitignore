@@ -9,3 +9,10 @@
 coverage.xml
 dist/
 venv/
+
+# IDE directories
+.vscode/
+.idea/
+
+# Local development files
+LOCAL/
