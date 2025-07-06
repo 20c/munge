@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(gh pr create:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(uv build:*)",
+      "Bash(uv run:*)"
+    ],
+    "deny": []
+  }
+}
