@@ -66,6 +66,8 @@ jobs:
       - name: Determine PyPI repository
         id: pypi-repo
         run: |
+          echo "GitHub ref: ${{ github.ref }}"
+          echo "GitHub ref name: ${{ github.ref_name }}"
           if [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             echo "repository=pypi" >> $GITHUB_OUTPUT
             echo "Publishing to PyPI"
@@ -74,7 +76,9 @@ jobs:
             echo "Publishing to TestPyPI"
           else
             echo "Not a release ref, skipping"
-            exit 1
+            echo "This is a test run on branch: ${{ github.ref_name }}"
+            echo "repository=testpypi" >> $GITHUB_OUTPUT
+            echo "Publishing to TestPyPI for testing"
           fi
           
       - name: Publish to PyPI
