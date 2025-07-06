@@ -1,5 +1,7 @@
 name: Release to PyPI
 
+# Test automation workflow for PyPI releases
+
 on:
   push:
     tags:
