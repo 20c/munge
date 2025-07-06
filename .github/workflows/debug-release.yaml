@@ -1,0 +1,29 @@
+name: Debug Release Workflow
+
+on:
+  push:
+    branches:
+      - 'test-release-*'
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Debug info
+        run: |
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Repository: ${{ github.repository }}"
+          
+      - name: Check if this is a test-release branch
+        run: |
+          if [[ "${{ github.ref_name }}" == test-release-* ]]; then
+            echo "✅ This is a test-release branch"
+            echo "Branch matches pattern: test-release-*"
+          else
+            echo "❌ This is NOT a test-release branch"
+            echo "Branch: ${{ github.ref_name }}"
+          fi
