@@ -57,9 +57,9 @@ jobs:
     if: startsWith(github.ref_name, 'test-release-')
     needs: build
     runs-on: ubuntu-latest
-    # environment:
-    #   name: testpypi  
-    #   url: https://test.pypi.org/p/munge
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/munge
     permissions:
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
