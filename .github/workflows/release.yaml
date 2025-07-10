@@ -73,10 +73,22 @@ jobs:
 
     - name: Publish distribution to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      continue-on-error: true
       with:
         repository-url: https://test.pypi.org/legacy/
         verbose: true
         print-hash: true
+
+    - name: TestPyPI publishing status
+      run: |
+        echo "TestPyPI publishing attempted."
+        echo "If it failed, you need to configure trusted publishing at:"
+        echo "https://test.pypi.org/manage/account/publishing/"
+        echo ""
+        echo "Configuration needed:"
+        echo "- Repository: 20c/munge"
+        echo "- Workflow filename: release.yaml"
+        echo "- Environment name: (leave empty for now)"
 
   publish-to-pypi:
     name: Publish to PyPI
