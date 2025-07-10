@@ -49,24 +49,25 @@ jobs:
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: python-package-distributions
           path: dist/
 
   publish-to-testpypi:
-    name: Publish to TestPyPI
+    name: Publish Python 🐍 distribution 📦 to TestPyPI
     if: startsWith(github.ref_name, 'test-release-')
     needs: build
     runs-on: ubuntu-latest
-    environment: testpypi
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/munge
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
-      contents: read   # Also required for trusted publishing
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
 
     steps:
-    - name: Download build artifacts
+    - name: Download all the dists
       uses: actions/download-artifact@v4
       with:
-        name: dist
+        name: python-package-distributions
         path: dist/
 
     - name: Debug environment and files
@@ -87,12 +88,10 @@ jobs:
           echo "Size: $(stat -c%s "$file") bytes"
         done
 
-    - name: Publish distribution to TestPyPI
+    - name: Publish distribution 📦 to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
-        verbose: true
-        print-hash: true
 
     - name: TestPyPI publishing status
       run: |
@@ -117,10 +116,10 @@ jobs:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
 
     steps:
-    - name: Download build artifacts
+    - name: Download all the dists
       uses: actions/download-artifact@v4
       with:
-        name: dist
+        name: python-package-distributions
         path: dist/
 
     - name: Publish distribution to PyPI
