@@ -1,6 +1,6 @@
 name: Release to PyPI
 
-# Ready for production - aligned with working 20c/rdap workflow
+# Testing with corrected TestPyPI trusted publisher config
 
 on:
   push:
