@@ -1,6 +1,6 @@
 name: Release to PyPI
 
-# Force trigger workflow
+# Ready for production - aligned with working 20c/rdap workflow
 
 on:
   push:
