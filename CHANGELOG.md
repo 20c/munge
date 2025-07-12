@@ -4,6 +4,13 @@
 ## Unreleased
 
 
+## 1.4.0
+### Added
+- support for py3.12
+### Fixed
+- finding data file in tests
+
+
 ## 1.3.0
 ### Added
 - python 3.10 and 3.11

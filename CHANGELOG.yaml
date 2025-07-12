@@ -1,8 +1,6 @@
 Unreleased:
-  added:
-  - support for py3.12
-  fixed:
-  - finding data file in tests
+  added: []
+  fixed: []
   changed: []
   deprecated: []
   removed: []
@@ -69,3 +67,8 @@ Unreleased:
   - click.Context
   removed:
   - unused get_type, Endpoint
+1.4.0:
+  added:
+  - support for py3.12
+  fixed:
+  - finding data file in tests
